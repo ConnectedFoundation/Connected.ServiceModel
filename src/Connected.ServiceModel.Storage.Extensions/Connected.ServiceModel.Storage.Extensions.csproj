@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Connected.ServiceModel.Storage.Model\Connected.ServiceModel.Storage.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
 </Project>

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>d9753978-58e4-42c4-abaa-c145e42b184b</UserSecretsId>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Connected.Sdk" Version="1.0.20-beta1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Core.Authorization.Default\Connected.Core.Authorization.Default.csproj" />
+    <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Core.Storage.Sql\Connected.Core.Storage.Sql.csproj" />
+    <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Runtime\Connected.Runtime.csproj" />
+    <ProjectReference Include="..\Connected.ServiceModel.Storage.FileSystem\Connected.ServiceModel.Storage.FileSystem.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
