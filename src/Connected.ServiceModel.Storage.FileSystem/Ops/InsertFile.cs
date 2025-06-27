@@ -1,9 +1,12 @@
-﻿using Connected.SaaS.Storage.Dtos;
+﻿using Connected.Notifications;
+using Connected.SaaS.Storage;
+using Connected.SaaS.Storage.Dtos;
 using Connected.Services;
 
 namespace Connected.ServiceModel.Storage.FileSystem.Ops;
 
-internal sealed class InsertFile(FileSystemConfiguration configuration) : ServiceAction<IInsertFileDto>
+internal sealed class InsertFile(FileSystemConfiguration configuration, IFileService files, IEventService events)
+	: ServiceAction<IInsertFileDto>
 {
 	protected override async Task OnInvoke()
 	{
@@ -16,5 +19,7 @@ internal sealed class InsertFile(FileSystemConfiguration configuration) : Servic
 
 		if (Dto.Content is not null)
 			await file.WriteAsync(Dto.Content);
+
+		await events.Inserted(this, files, $"{Dto.Directory}/{Dto.FileName}");
 	}
 }
