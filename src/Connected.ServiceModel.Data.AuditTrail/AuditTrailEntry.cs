@@ -1,10 +1,10 @@
 ﻿using Connected.Annotations;
 using Connected.Annotations.Entities;
-using Connected.Data.AuditTrail;
 using Connected.Entities;
 
 namespace Connected.ServiceModel.Data.AuditTrail;
 
+[Table(Schema = SchemaAttribute.CoreSchema)]
 internal sealed record AuditTrailEntry : EntityContainer<long>, IAuditTrail
 {
 	[Index(false, $"idx_{nameof(AuditTrailEntry)}_entity")]
