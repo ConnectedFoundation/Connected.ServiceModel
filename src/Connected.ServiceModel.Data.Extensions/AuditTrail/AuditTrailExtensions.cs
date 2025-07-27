@@ -61,26 +61,42 @@ public static class AuditTrailExtensions
 
 	public static async Task Write(this IAuditTrailService service, IAuthenticationService authentication, AuditTrailVerb verb, string entity, object entityId, Dictionary<string, object?> properties, string? description = null)
 	{
-		var existing = verb == AuditTrailVerb.Update ? await Query(service, entity, entityId) : ImmutableList<IAuditTrail>.Empty;
-
-		if (existing.Count != 0)
-			existing = existing.OrderByDescending(f => f.Id).ToImmutableList();
-
 		var identity = await authentication.SelectIdentity();
 
-		foreach (var property in properties)
+		if (verb == AuditTrailVerb.Update)
 		{
-			if (!HasChanged(property, existing))
-				continue;
+			var existing = verb == AuditTrailVerb.Update ? await Query(service, entity, entityId) : ImmutableList<IAuditTrail>.Empty;
 
+			if (existing.Count != 0)
+				existing = existing.OrderByDescending(f => f.Id).ToImmutableList();
+
+			foreach (var property in properties)
+			{
+				if (!HasChanged(property, existing))
+					continue;
+
+				var dto = Dto.Factory.Create<IInsertAuditTrailDto>();
+
+				dto.Description = description;
+				dto.Entity = entity;
+				dto.EntityId = entityId.ToString() ?? throw new NullReferenceException(nameof(entityId));
+				dto.Identity = identity?.Token;
+				dto.Property = property.Key;
+				dto.Value = property.Value?.ToString();
+				dto.Verb = verb;
+
+				await service.Insert(dto);
+			}
+		}
+
+		if (verb == AuditTrailVerb.Delete || verb == AuditTrailVerb.Authorization)
+		{
 			var dto = Dto.Factory.Create<IInsertAuditTrailDto>();
 
 			dto.Description = description;
 			dto.Entity = entity;
 			dto.EntityId = entityId.ToString() ?? throw new NullReferenceException(nameof(entityId));
 			dto.Identity = identity?.Token;
-			dto.Property = property.Key;
-			dto.Value = property.Value?.ToString();
 			dto.Verb = verb;
 
 			await service.Insert(dto);

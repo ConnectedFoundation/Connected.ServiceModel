@@ -8,7 +8,8 @@ public enum AuditTrailVerb
 	Add = 1,
 	Update = 2,
 	Delete = 3,
-	Other = 4
+	Authorization = 4,
+	Other = 99
 }
 
 public interface IAuditTrail : IEntityContainer<long>
