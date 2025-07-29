@@ -120,4 +120,7 @@
   <data name="ErrEntityKeyAttributeExpected" xml:space="preserve">
     <value>Entity should have EntityKeyAttribute specified in order to perform automatic audit trail discovery</value>
   </data>
+  <data name="ErrExpectedEntityImplementation" xml:space="preserve">
+    <value>At least one entity interface was expected to be implemented on the passed entity</value>
+  </data>
 </root>

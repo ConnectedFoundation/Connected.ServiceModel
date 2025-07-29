@@ -32,4 +32,8 @@ internal sealed record AuditTrailEntry : EntityContainer<long>, IAuditTrail
 
 	[Ordinal(5)]
 	public AuditTrailVerb Verb { get; init; }
+
+	[Ordinal(6)]
+	[Index(false, $"idx_{nameof(AuditTrailEntry)}_transaction")]
+	public Guid Transaction { get; init; }
 }

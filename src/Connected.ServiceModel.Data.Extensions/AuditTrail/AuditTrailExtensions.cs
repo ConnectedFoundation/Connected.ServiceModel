@@ -10,17 +10,12 @@ namespace Connected.ServiceModel.Data.AuditTrail;
 
 public static class AuditTrailExtensions
 {
-	public static async Task Write<TPrimaryKey>(this IAuditTrailService service, IAuthenticationService authentication, AuditTrailVerb verb, IPrimaryKeyEntity<TPrimaryKey> entity)
+	public static async Task Write<TPrimaryKey>(this IAuditTrailService service, AuditTrailVerb verb, IPrimaryKeyEntity<TPrimaryKey> entity)
 		where TPrimaryKey : notnull
 	{
-		await Write(service, authentication, verb, entity, null);
-	}
-
-	public static async Task Write<TPrimaryKey>(this IAuditTrailService service, IAuthenticationService authentication, AuditTrailVerb verb, IPrimaryKeyEntity<TPrimaryKey> entity, string? description)
-		where TPrimaryKey : notnull
-	{
-		var keyAttribute = entity.GetType().GetCustomAttribute<EntityKeyAttribute>() ?? throw new InvalidOperationException($"{SR.ErrEntityKeyAttributeExpected} ({entity.GetType().Name}");
-		var properties = entity.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty);
+		var implemented = entity.GetType().ResolveImplementedEntity() ?? throw new NullReferenceException($"{SR.ErrExpectedEntityImplementation} ({entity.GetType().Name})");
+		var keyAttribute = implemented.GetCustomAttribute<EntityKeyAttribute>() ?? throw new InvalidOperationException($"{SR.ErrEntityKeyAttributeExpected} ({entity.GetType().Name}");
+		var properties = implemented.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty);
 		var items = new Dictionary<string, object?>();
 
 		foreach (var property in properties)
@@ -36,71 +31,85 @@ public static class AuditTrailExtensions
 			items.Add(property.Name, property.GetValue(entity));
 		}
 
-		await Write(service, authentication, verb, keyAttribute.Key, entity.Id, items, description);
+		await Write(service, verb, keyAttribute.Key, entity.Id, items);
 	}
 
 	public static async Task Write(this IAuditTrailService service, IAuthenticationService authentication, AuditTrailVerb verb, string entity, object entityId, string? property, object? value)
-	{
-		await Write(service, authentication, verb, entity, entityId, property, value, null);
-	}
-
-	public static async Task Write(this IAuditTrailService service, IAuthenticationService authentication, AuditTrailVerb verb, string entity, object entityId, string? property, object? value, string? description)
 	{
 		var properties = new Dictionary<string, object?>();
 
 		if (property is not null)
 			properties.Add(property, value);
 
-		await Write(service, authentication, verb, entity, entityId, properties, description);
+		await Write(service, verb, entity, entityId, properties);
 	}
 
-	public static async Task Write(this IAuditTrailService service, IAuthenticationService authentication, AuditTrailVerb verb, string entity, object entityId, Dictionary<string, object?> properties)
+	public static async Task Write(this IAuditTrailService service, AuditTrailVerb verb, string entity, object entityId, Dictionary<string, object?> properties)
 	{
-		await Write(service, authentication, verb, entity, entityId, properties, null);
-	}
-
-	public static async Task Write(this IAuditTrailService service, IAuthenticationService authentication, AuditTrailVerb verb, string entity, object entityId, Dictionary<string, object?> properties, string? description = null)
-	{
-		var identity = await authentication.SelectIdentity();
-
-		if (verb == AuditTrailVerb.Update)
+		switch (verb)
 		{
-			var existing = verb == AuditTrailVerb.Update ? await Query(service, entity, entityId) : ImmutableList<IAuditTrail>.Empty;
-
-			if (existing.Count != 0)
-				existing = existing.OrderByDescending(f => f.Id).ToImmutableList();
-
-			foreach (var property in properties)
-			{
-				if (!HasChanged(property, existing))
-					continue;
-
-				var dto = Dto.Factory.Create<IInsertAuditTrailDto>();
-
-				dto.Description = description;
-				dto.Entity = entity;
-				dto.EntityId = entityId.ToString() ?? throw new NullReferenceException(nameof(entityId));
-				dto.Identity = identity?.Token;
-				dto.Property = property.Key;
-				dto.Value = property.Value?.ToString();
-				dto.Verb = verb;
-
-				await service.Insert(dto);
-			}
+			case AuditTrailVerb.Add:
+				await WriteAdd(service, entity, entityId, properties);
+				break;
+			case AuditTrailVerb.Update:
+				await WriteUpdate(service, entity, entityId, properties);
+				break;
+			case AuditTrailVerb.Delete:
+			case AuditTrailVerb.Authorization:
+				await WriteVerb(service, entity, entityId, verb);
+				break;
 		}
+	}
 
-		if (verb == AuditTrailVerb.Delete || verb == AuditTrailVerb.Authorization)
+	private static async Task WriteAdd(IAuditTrailService service, string entity, object entityId, Dictionary<string, object?> properties)
+	{
+		foreach (var property in properties)
 		{
 			var dto = Dto.Factory.Create<IInsertAuditTrailDto>();
 
-			dto.Description = description;
 			dto.Entity = entity;
 			dto.EntityId = entityId.ToString() ?? throw new NullReferenceException(nameof(entityId));
-			dto.Identity = identity?.Token;
-			dto.Verb = verb;
+			dto.Property = property.Key;
+			dto.Value = property.Value?.ToString();
+			dto.Verb = AuditTrailVerb.Add;
 
 			await service.Insert(dto);
 		}
+	}
+
+	private static async Task WriteUpdate(IAuditTrailService service, string entity, object entityId, Dictionary<string, object?> properties)
+	{
+		var existing = await Query(service, entity, entityId);
+
+		if (existing.Count != 0)
+			existing = existing.OrderByDescending(f => f.Id).ToImmutableList();
+
+		foreach (var property in properties)
+		{
+			if (!HasChanged(property, existing))
+				continue;
+
+			var dto = Dto.Factory.Create<IInsertAuditTrailDto>();
+
+			dto.Entity = entity;
+			dto.EntityId = entityId.ToString() ?? throw new NullReferenceException(nameof(entityId));
+			dto.Property = property.Key;
+			dto.Value = property.Value?.ToString();
+			dto.Verb = AuditTrailVerb.Update;
+
+			await service.Insert(dto);
+		}
+	}
+
+	private static async Task WriteVerb(IAuditTrailService service, string entity, object entityId, AuditTrailVerb verb)
+	{
+		var dto = Dto.Factory.Create<IInsertAuditTrailDto>();
+
+		dto.Entity = entity;
+		dto.EntityId = entityId.ToString() ?? throw new NullReferenceException(nameof(entityId));
+		dto.Verb = verb;
+
+		await service.Insert(dto);
 	}
 
 	private static async Task<IImmutableList<IAuditTrail>> Query(this IAuditTrailService service, string entity, object entityId)

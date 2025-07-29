@@ -20,4 +20,5 @@ public interface IAuditTrail : IEntityContainer<long>
 	string? Value { get; init; }
 	string? Description { get; init; }
 	AuditTrailVerb Verb { get; init; }
+	Guid Transaction { get; init; }
 }

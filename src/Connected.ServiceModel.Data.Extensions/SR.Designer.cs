@@ -68,5 +68,14 @@ namespace Connected.ServiceModel.Data {
                 return ResourceManager.GetString("ErrEntityKeyAttributeExpected", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least one entity interface was expected to be implemented on the passed entity.
+        /// </summary>
+        internal static string ErrExpectedEntityImplementation {
+            get {
+                return ResourceManager.GetString("ErrExpectedEntityImplementation", resourceCulture);
+            }
+        }
     }
 }

@@ -13,11 +13,5 @@ internal sealed class InsertAuditTrailDto : EntityDto, IInsertAuditTrailDto
 	[MaxLength(1024)]
 	public string? Value { get; set; }
 
-	[MaxLength(1024)]
-	public string? Description { get; set; }
-
-	[MaxLength(128)]
-	public string? Identity { get; set; }
-
 	public AuditTrailVerb Verb { get; set; } = AuditTrailVerb.Update;
 }
