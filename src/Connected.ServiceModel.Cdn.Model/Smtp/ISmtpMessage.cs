@@ -1,4 +1,5 @@
-﻿using Connected.Entities;
+﻿using Connected.Annotations.Entities;
+using Connected.Entities;
 
 namespace Connected.ServiceModel.Cdn.Smtp;
 
@@ -10,6 +11,8 @@ public enum SmtpMessageStatus
 	Sent = 3,
 	Error = 4
 }
+
+[EntityKey(CdnMetaData.SmtpMessageKey)]
 public interface ISmtpMessage : IEntity<long>
 {
 	string? RecipientName { get; init; }
