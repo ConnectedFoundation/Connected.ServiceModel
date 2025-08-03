@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connected.ServiceModel.Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connected.ServiceModel.Data.Extensions", "src\Connected.ServiceModel.Data.Extensions\Connected.ServiceModel.Data.Extensions.csproj", "{A7E8F44C-E7D5-4283-8694-4742FA6E9ADF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connected.ServiceModel.Cdn.Model", "src\Connected.ServiceModel.Cdn.Model\Connected.ServiceModel.Cdn.Model.csproj", "{FEDD876F-55B0-4FE6-B002-F59B9037AFA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{A7E8F44C-E7D5-4283-8694-4742FA6E9ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7E8F44C-E7D5-4283-8694-4742FA6E9ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7E8F44C-E7D5-4283-8694-4742FA6E9ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEDD876F-55B0-4FE6-B002-F59B9037AFA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEDD876F-55B0-4FE6-B002-F59B9037AFA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEDD876F-55B0-4FE6-B002-F59B9037AFA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEDD876F-55B0-4FE6-B002-F59B9037AFA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
