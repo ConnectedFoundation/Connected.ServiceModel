@@ -22,7 +22,4 @@ public interface ISmtpMessageService
 
 	[ServiceOperation(ServiceOperationVerbs.Get)]
 	Task<IImmutableList<ISmtpMessage>> Query(IQueryDto? dto);
-
-	[ServiceOperation(ServiceOperationVerbs.Get)]
-	Task<IImmutableList<ISmtpMessageCopy>> QueryActive();
 }

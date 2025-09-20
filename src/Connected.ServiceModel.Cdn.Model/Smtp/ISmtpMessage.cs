@@ -7,17 +7,13 @@ public enum SmtpMessageStatus
 {
 	Draft = 0,
 	Ready = 1,
-	Processing = 2,
-	Sent = 3,
-	Error = 4
+	Sent = 2,
+	Error = 3
 }
 
 [EntityKey(CdnMetaData.SmtpMessageKey)]
 public interface ISmtpMessage : IEntity<long>
 {
-	string? RecipientName { get; init; }
-	string RecipientEmail { get; init; }
-
 	string? FromName { get; init; }
 	string FromEmail { get; init; }
 

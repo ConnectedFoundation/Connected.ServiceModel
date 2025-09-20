@@ -22,11 +22,6 @@ internal sealed class SmtpMessageService(IServiceProvider services)
 		throw new NotImplementedException();
 	}
 
-	public Task<IImmutableList<ISmtpMessageCopy>> QueryActive()
-	{
-		throw new NotImplementedException();
-	}
-
 	public Task<ISmtpMessage?> Select(IPrimaryKeyDto<long> dto)
 	{
 		throw new NotImplementedException();

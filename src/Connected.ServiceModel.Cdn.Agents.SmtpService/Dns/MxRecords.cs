@@ -1,0 +1,42 @@
+﻿using System.Collections;
+
+namespace Connected.ServiceModel.Cdn.Agents.SmtpService.Dns;
+
+internal sealed class MxRecords : CollectionBase
+{
+	public void Add(MxRecord mxRecord)
+	{
+		List.Add(mxRecord);
+	}
+
+	public void Add(string domain, int preference)
+	{
+		MxRecord d = new(domain, preference);
+
+		List.Add(d);
+	}
+
+	public void Remove(int index)
+	{
+		if (index < Count || index >= 0)
+			List.RemoveAt(index);
+	}
+
+	public MxRecord? this[int index] { get { return List[index] as MxRecord; } }
+
+	public MxRecord? GetPrefered()
+	{
+		int index, minIndex = 0;
+
+		for (index = 0; index < List.Count; index++)
+		{
+			if (minIndex == -1 || minIndex > this[index]?.Preference)
+				minIndex = index;
+		}
+
+		if (minIndex < Count && minIndex != -1)
+			return this[minIndex];
+		else
+			return null;
+	}
+}
