@@ -8,10 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Connected.Sdk" Version="1.0.20-beta1" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Sdk\Connected.Sdk.csproj" />
     <ProjectReference Include="..\Connected.ServiceModel.Storage.Model\Connected.ServiceModel.Storage.Model.csproj" />
   </ItemGroup>
 
