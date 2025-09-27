@@ -1,4 +1,4 @@
-﻿namespace Connected.SaaS.Storage;
+﻿namespace Connected.ServiceModel.Storage;
 
 public static class StorageMetaData
 {

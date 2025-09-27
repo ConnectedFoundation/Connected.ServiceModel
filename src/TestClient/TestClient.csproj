@@ -14,8 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Core.Authorization.Default\Connected.Core.Authorization.Default.csproj" />
-    <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Core.Storage.Sql\Connected.Core.Storage.Sql.csproj" />
     <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Runtime\Connected.Runtime.csproj" />
     <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Sdk\Connected.Sdk.csproj" />
     <ProjectReference Include="..\Connected.ServiceModel.Storage.FileSystem\Connected.ServiceModel.Storage.FileSystem.csproj" />

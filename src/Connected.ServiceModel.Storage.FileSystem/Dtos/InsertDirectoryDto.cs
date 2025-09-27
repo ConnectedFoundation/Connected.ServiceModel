@@ -1,4 +1,4 @@
-﻿using Connected.SaaS.Storage.Dtos;
+﻿using Connected.ServiceModel.Storage.Dtos;
 
 namespace Connected.ServiceModel.Storage.FileSystem.Dtos;
 

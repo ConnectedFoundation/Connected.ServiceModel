@@ -104,5 +104,14 @@ namespace Connected.ServiceModel.Storage.FileSystem {
                 return ResourceManager.GetString("ErrRootFolderExpected", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No &apos;directory&apos; header specified..
+        /// </summary>
+        internal static string ValDirHeader {
+            get {
+                return ResourceManager.GetString("ValDirHeader", resourceCulture);
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Connected.SaaS.Storage.Dtos;
+﻿namespace Connected.ServiceModel.Storage.Dtos;
 public interface IMoveFileDto : IFileDto
 {
 	string NewFileName { get; set; }

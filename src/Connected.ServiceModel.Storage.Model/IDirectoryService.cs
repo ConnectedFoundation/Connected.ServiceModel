@@ -1,8 +1,8 @@
 ﻿using Connected.Annotations;
-using Connected.SaaS.Storage.Dtos;
+using Connected.ServiceModel.Storage.Dtos;
 using System.Collections.Immutable;
 
-namespace Connected.SaaS.Storage;
+namespace Connected.ServiceModel.Storage;
 
 [Service, ServiceUrl(StorageUrls.DirectoryService)]
 public interface IDirectoryService

@@ -132,4 +132,7 @@
   <data name="ErrRootFolderExpected" xml:space="preserve">
     <value>'rootFolder' configuration setting expected</value>
   </data>
+  <data name="ValDirHeader" xml:space="preserve">
+    <value>No 'directory' header specified.</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-﻿using Connected.SaaS.Storage.Dtos;
+﻿using Connected.ServiceModel.Storage.Dtos;
 using Connected.Services;
 using System.ComponentModel.DataAnnotations;
 

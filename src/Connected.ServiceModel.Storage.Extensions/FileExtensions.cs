@@ -1,8 +1,8 @@
-﻿using Connected.SaaS.Storage.Dtos;
+﻿using Connected.ServiceModel.Storage.Dtos;
 using Connected.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Connected.SaaS.Storage;
+namespace Connected.ServiceModel.Storage;
 public static class FileExtensions
 {
 	public static async Task Ensure(this IFileService service, string directory, string fileName, byte[]? content)

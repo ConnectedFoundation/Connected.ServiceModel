@@ -1,6 +1,6 @@
 ﻿using Connected.Services;
 
-namespace Connected.SaaS.Storage.Dtos;
+namespace Connected.ServiceModel.Storage.Dtos;
 public interface IFileDto : IDto
 {
 	string? Directory { get; set; }

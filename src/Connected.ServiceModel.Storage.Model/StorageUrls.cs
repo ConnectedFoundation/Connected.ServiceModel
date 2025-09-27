@@ -1,4 +1,4 @@
-﻿namespace Connected.SaaS.Storage;
+﻿namespace Connected.ServiceModel.Storage;
 
 public static class StorageUrls
 {
@@ -6,4 +6,5 @@ public static class StorageUrls
 
 	public const string DirectoryService = $"{Namespace}/directories";
 	public const string FileService = $"{Namespace}/files";
+	public const string FileServiceUpload = $"{Namespace}/files/upload";
 }

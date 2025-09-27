@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Connected.SaaS.Storage</RootNamespace>
+    <RootNamespace>Connected.ServiceModel.Storage</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

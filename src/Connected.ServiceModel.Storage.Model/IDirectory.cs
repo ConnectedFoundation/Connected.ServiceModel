@@ -1,6 +1,6 @@
 ﻿using Connected.Entities;
 
-namespace Connected.SaaS.Storage;
+namespace Connected.ServiceModel.Storage;
 
 public interface IDirectory : IEntity
 {

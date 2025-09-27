@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Connected.ServiceModel.Cdn.Extensions\Connected.ServiceModel.Cdn.Extensions.csproj" />
+    <ProjectReference Include="..\Connected.ServiceModel.Cdn.Model\Connected.ServiceModel.Cdn.Model.csproj" />
+    <ProjectReference Include="..\Connected.ServiceModel.Data.Extensions\Connected.ServiceModel.Data.Extensions.csproj" />
+    <ProjectReference Include="..\Connected.ServiceModel.Data.Model\Connected.ServiceModel.Data.Model.csproj" />
+    <ProjectReference Include="..\Connected.ServiceModel.Storage.Extensions\Connected.ServiceModel.Storage.Extensions.csproj" />
+    <ProjectReference Include="..\Connected.ServiceModel.Storage.Model\Connected.ServiceModel.Storage.Model.csproj" />
+  </ItemGroup>
+
+</Project>

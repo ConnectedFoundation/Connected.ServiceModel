@@ -1,5 +1,4 @@
-﻿using Connected.SaaS.Storage;
-using Connected.SaaS.Storage.Dtos;
+﻿using Connected.ServiceModel.Storage.Dtos;
 using Connected.ServiceModel.Storage.FileSystem.Ops;
 using Connected.Services;
 using System.Collections.Immutable;

@@ -1,8 +1,8 @@
 ﻿using Connected.Annotations;
-using Connected.SaaS.Storage.Dtos;
+using Connected.ServiceModel.Storage.Dtos;
 using System.Collections.Immutable;
 
-namespace Connected.SaaS.Storage;
+namespace Connected.ServiceModel.Storage;
 
 [Service, ServiceUrl(StorageUrls.FileService)]
 public interface IFileService
