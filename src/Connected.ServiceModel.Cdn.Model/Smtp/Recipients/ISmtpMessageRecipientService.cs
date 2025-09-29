@@ -5,11 +5,14 @@ using System.Collections.Immutable;
 
 namespace Connected.ServiceModel.Cdn.Smtp.Recipients;
 
-[Service, ServiceUrl(CdnUrls.SmtpMessageCarbonCopiesService)]
+[Service, ServiceUrl(CdnUrls.SmtpMessageRecipientsService)]
 public interface ISmtpMessageRecipientService
 {
 	[ServiceOperation(ServiceOperationVerbs.Post)]
-	Task<long> Insert(IInsertRecipientDto dto);
+	Task<long> Insert(IInsertSmtpMessageRecipientDto dto);
+
+	[ServiceOperation(ServiceOperationVerbs.Put)]
+	Task Update(IUpdateSmtpMessageRecipientDto dto);
 
 	[ServiceOperation(ServiceOperationVerbs.Delete)]
 	Task Delete(IPrimaryKeyDto<long> dto);
@@ -19,4 +22,7 @@ public interface ISmtpMessageRecipientService
 
 	[ServiceOperation(ServiceOperationVerbs.Get)]
 	Task<IImmutableList<ISmtpMessageRecipient>> Query(IHeadDto<long> dto);
+
+	[ServiceOperation(ServiceOperationVerbs.Get)]
+	Task<ISmtpMessageRecipient?> Select(IPrimaryKeyDto<long> dto);
 }
