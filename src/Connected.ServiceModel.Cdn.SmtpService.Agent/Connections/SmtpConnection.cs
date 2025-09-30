@@ -102,8 +102,7 @@ internal sealed class SmtpConnection(string domain) : ISmtpConnection
 			if (_client is not null && _client.IsConnected)
 			{
 				var recipient = new MailboxAddress(string.Empty, email);
-
-				_client.Send(FormatOptions.Default, message, message.Sender, [recipient], token);
+				var result = _client.Send(FormatOptions.Default, message, message.Sender, [recipient], token);
 			}
 			else
 				throw new SmtpException(SmtpExceptionType.NotConnected);

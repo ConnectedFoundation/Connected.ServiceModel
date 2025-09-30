@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Connected.ServiceModel.Cdn.Smtp.Recipients.Dtos;
-internal abstract class InsertSmtpMessageRecipientDto : SmtpMessageRecipientDto, IInsertSmtpMessageRecipientDto
+internal sealed class InsertSmtpMessageRecipientDto : SmtpMessageRecipientDto, IInsertSmtpMessageRecipientDto
 {
 	[MaxLength(DefaultNameLength)]
 	public string? Name { get; set; }

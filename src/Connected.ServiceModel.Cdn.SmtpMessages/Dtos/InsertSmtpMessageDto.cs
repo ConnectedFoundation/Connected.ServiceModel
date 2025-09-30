@@ -5,12 +5,6 @@ namespace Connected.ServiceModel.Cdn.Smtp.Dtos;
 internal sealed class InsertSmtpMessageDto : Dto, IInsertSmtpMessageDto
 {
 	[MaxLength(256)]
-	public string? RecipientName { get; set; }
-
-	[Required, MaxLength(512)]
-	public required string RecipientEmail { get; set; }
-
-	[MaxLength(256)]
 	public string? FromName { get; set; }
 
 	[Required, MaxLength(512)]

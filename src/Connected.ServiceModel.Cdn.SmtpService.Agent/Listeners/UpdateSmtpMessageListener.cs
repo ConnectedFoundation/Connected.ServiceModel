@@ -2,7 +2,6 @@
 using Connected.Collections.Queues;
 using Connected.Notifications;
 using Connected.ServiceModel.Cdn.Smtp;
-using Connected.ServiceModel.Cdn.Smtp.Dtos;
 using Connected.ServiceModel.Cdn.Smtp.Recipients;
 using Connected.Services;
 
@@ -10,7 +9,7 @@ namespace Connected.ServiceModel.Cdn.SmtpService.Listeners;
 
 [Middleware<ISmtpMessageService>(nameof(ServiceEvents.Updated))]
 internal sealed class UpdateSmtpMessageListener(IQueueService queue, ISmtpMessageService smtp, ISmtpMessageRecipientService recipients)
-	: EventListener<IUpdateSmtpMessageDto>
+	: EventListener<IPrimaryKeyDto<long>>
 {
 	protected override async Task OnInvoke()
 	{

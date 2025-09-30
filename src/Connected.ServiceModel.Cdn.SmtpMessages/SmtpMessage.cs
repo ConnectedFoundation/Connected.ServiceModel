@@ -8,30 +8,21 @@ namespace Connected.ServiceModel.Cdn.SmtpMessages;
 [Table(Schema = SchemaAttribute.CoreSchema)]
 internal sealed record SmtpMessage : ConsistentEntity<long>, ISmtpMessage
 {
-	[PrimaryKey(false)]
-	public override long Id { get => base.Id; init => base.Id = value; }
-
-	[Ordinal(0), Length(256)]
-	public string? RecipientName { get; init; }
-
-	[Ordinal(1), Length(512)]
-	public required string RecipientEmail { get; init; }
-
-	[Ordinal(2), Length(256)]
+	[Ordinal(1), Length(256)]
 	public string? FromName { get; init; }
 
-	[Ordinal(3), Length(512)]
+	[Ordinal(2), Length(512)]
 	public required string FromEmail { get; init; }
 
-	[Ordinal(4), Length(1024)]
+	[Ordinal(3), Length(1024)]
 	public required string Subject { get; init; }
 
-	[Ordinal(5), Date(DateKind.DateTime2, 5)]
+	[Ordinal(4), Date(DateKind.DateTime2, 5)]
 	public DateTimeOffset? Delivery { get; init; }
 
-	[Ordinal(6)]
+	[Ordinal(5)]
 	public int FileCount { get; init; }
 
-	[Ordinal(7)]
+	[Ordinal(6)]
 	public SmtpMessageStatus Status { get; init; }
 }

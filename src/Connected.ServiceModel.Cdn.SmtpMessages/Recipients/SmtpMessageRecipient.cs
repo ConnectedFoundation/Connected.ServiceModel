@@ -4,6 +4,8 @@ using Connected.Entities;
 using Connected.Services;
 
 namespace Connected.ServiceModel.Cdn.Smtp.Recipients;
+
+[Table(Schema = SchemaAttribute.CoreSchema)]
 internal sealed record SmtpMessageRecipient : ConsistentEntity<long>, ISmtpMessageRecipient
 {
 	[Ordinal(0)]
