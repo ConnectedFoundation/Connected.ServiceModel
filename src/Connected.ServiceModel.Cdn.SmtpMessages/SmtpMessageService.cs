@@ -1,4 +1,5 @@
 ﻿using Connected.ServiceModel.Cdn.Smtp.Dtos;
+using Connected.ServiceModel.Cdn.Smtp.Ops;
 using Connected.Services;
 using System.Collections.Immutable;
 
@@ -7,28 +8,28 @@ namespace Connected.ServiceModel.Cdn.Smtp;
 internal sealed class SmtpMessageService(IServiceProvider services)
 	: Service(services), ISmtpMessageService
 {
-	public Task Delete(IPrimaryKeyDto<long> dto)
+	public async Task Delete(IPrimaryKeyDto<long> dto)
 	{
-		throw new NotImplementedException();
+		await Invoke(GetOperation<Delete>(), dto);
 	}
 
-	public Task<long> Insert(IInsertSmtpMessageDto dto)
+	public async Task<long> Insert(IInsertSmtpMessageDto dto)
 	{
-		throw new NotImplementedException();
+		return await Invoke(GetOperation<Insert>(), dto);
 	}
 
-	public Task<IImmutableList<ISmtpMessage>> Query(IQueryDto? dto)
+	public async Task<IImmutableList<ISmtpMessage>> Query(IQueryDto? dto)
 	{
-		throw new NotImplementedException();
+		return await Invoke(GetOperation<Query>(), dto ?? QueryDto.NoPaging);
 	}
 
-	public Task<ISmtpMessage?> Select(IPrimaryKeyDto<long> dto)
+	public async Task<ISmtpMessage?> Select(IPrimaryKeyDto<long> dto)
 	{
-		throw new NotImplementedException();
+		return await Invoke(GetOperation<Select>(), dto);
 	}
 
-	public Task Update(IUpdateSmtpMessageDto dto)
+	public async Task Update(IUpdateSmtpMessageDto dto)
 	{
-		throw new NotImplementedException();
+		await Invoke(GetOperation<Update>(), dto);
 	}
 }
