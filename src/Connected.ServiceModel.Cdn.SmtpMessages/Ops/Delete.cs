@@ -10,7 +10,7 @@ internal sealed class Delete(IStorageProvider storage, IEventService events, ISm
 {
 	protected override async Task OnInvoke()
 	{
-		var entity = SetState(await storage.Open<SmtpMessage>().AsEntity(f => f.Id == Dto.Id)).Required();
+		var entity = SetState(await messages.Select(Dto)).Required<SmtpMessage>();
 
 		await storage.Open<SmtpMessage>().Update(entity.Merge(Dto, State.Delete));
 		await events.Deleted(this, messages, entity.Id);

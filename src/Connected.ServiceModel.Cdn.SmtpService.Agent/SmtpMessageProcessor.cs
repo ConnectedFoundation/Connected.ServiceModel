@@ -1,6 +1,7 @@
 ﻿using Connected.ServiceModel.Cdn.Smtp;
 using Connected.ServiceModel.Cdn.Smtp.Headers;
 using Connected.ServiceModel.Cdn.Smtp.Recipients;
+using Connected.ServiceModel.Cdn.Smtp.Text;
 using Connected.ServiceModel.Cdn.SmtpService.Configuration;
 using Connected.ServiceModel.Cdn.SmtpService.Dkim;
 using Connected.ServiceModel.Cdn.SmtpService.Dkim.Dtos;

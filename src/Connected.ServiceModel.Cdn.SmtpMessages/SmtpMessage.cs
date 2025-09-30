@@ -8,6 +8,9 @@ namespace Connected.ServiceModel.Cdn.SmtpMessages;
 [Table(Schema = SchemaAttribute.CoreSchema)]
 internal sealed record SmtpMessage : ConsistentEntity<long>, ISmtpMessage
 {
+	[PrimaryKey(false)]
+	public override long Id { get => base.Id; init => base.Id = value; }
+
 	[Ordinal(0), Length(256)]
 	public string? RecipientName { get; init; }
 

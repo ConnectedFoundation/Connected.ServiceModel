@@ -3,7 +3,7 @@ using Connected.ServiceModel.Cdn.Smtp.Text.Dtos;
 using Connected.Services;
 using System.Collections.Immutable;
 
-namespace Connected.ServiceModel.Cdn.Smtp.Headers;
+namespace Connected.ServiceModel.Cdn.Smtp.Text;
 
 [Service, ServiceUrl(CdnUrls.SmtpMessageTextService)]
 public interface ISmtpMessageTextService
@@ -21,8 +21,8 @@ public interface ISmtpMessageTextService
 	Task Delete(IPrimaryKeyDto<long> dto);
 
 	[ServiceOperation(ServiceOperationVerbs.Get)]
-	Task<IImmutableList<ISmtpMessageTextDto>> Query(IPrimaryKeyListDto<long> dto);
+	Task<IImmutableList<ISmtpMessageText>> Query(IPrimaryKeyListDto<long> dto);
 
 	[ServiceOperation(ServiceOperationVerbs.Get)]
-	Task<ISmtpMessageTextDto?> Select(IPrimaryKeyDto<long> dto);
+	Task<ISmtpMessageText?> Select(IPrimaryKeyDto<long> dto);
 }
