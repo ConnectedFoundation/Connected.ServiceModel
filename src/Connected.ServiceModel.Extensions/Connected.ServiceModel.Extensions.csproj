@@ -4,10 +4,15 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>Connected.ServiceModel.Storage</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Connected.ServiceModel.Extensions\Connected.ServiceModel.Extensions.csproj" />
+    <PackageReference Include="MimeKit" Version="4.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Sdk\Connected.Sdk.csproj" />
     <ProjectReference Include="..\Connected.ServiceModel.Model\Connected.ServiceModel.Model.csproj" />
   </ItemGroup>
 
