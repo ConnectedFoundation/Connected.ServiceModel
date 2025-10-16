@@ -18,6 +18,9 @@ internal sealed class Upload(HttpContext httpContext)
 			var directory = file.Headers["directory"].ToString();
 
 			if (string.IsNullOrWhiteSpace(directory))
+				directory = HttpContext.Request.Headers["directory"].ToString();
+
+            if (string.IsNullOrWhiteSpace(directory))
 				throw new BadHttpRequestException(SR.ValDirHeader);
 
 			var fileService = Scope.Value.ServiceProvider.GetRequiredService<IFileService>();
