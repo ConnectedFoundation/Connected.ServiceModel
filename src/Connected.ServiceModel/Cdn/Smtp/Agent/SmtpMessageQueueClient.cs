@@ -79,7 +79,7 @@ internal sealed class SmtpMessageQueueClient(ISmtpMessageService messages, ISmtp
 
 	private async Task Ping()
 	{
-		using var scope = Scope.Create().WithSystemIdentity();
+		using var scope = await Scope.Create().WithSystemIdentity();
 
 		var queue = scope.ServiceProvider.GetRequiredService<IQueueService>();
 		var dto = Dto.Create<IUpdateDto>();
@@ -94,7 +94,7 @@ internal sealed class SmtpMessageQueueClient(ISmtpMessageService messages, ISmtp
 
 	private async Task Lifespan()
 	{
-		using var scope = Scope.Create().WithSystemIdentity();
+		using var scope = await Scope.Create().WithSystemIdentity();
 
 		var queue = scope.ServiceProvider.GetRequiredService<IQueueService>();
 		var dto = Dto.Create<IUpdateDto>();
@@ -156,7 +156,7 @@ internal sealed class SmtpMessageQueueClient(ISmtpMessageService messages, ISmtp
 
 		await recipients.Update(dto);
 
-		using var scope = Scope.Create().WithSystemIdentity();
+		using var scope = await Scope.Create().WithSystemIdentity();
 		var queue = scope.ServiceProvider.GetRequiredService<IQueueService>();
 		var updateQueueDto = Dto.Create<IUpdateDto>();
 
