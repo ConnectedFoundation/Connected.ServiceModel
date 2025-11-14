@@ -1,17 +1,14 @@
 ﻿using Connected.Authentication;
-using Connected.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace Connected.ServiceModel.Storage.FileSystem;
 
-internal sealed class FileSystemAuthentication(IAuthenticationService authentication, IConfiguration configuration)
+internal sealed class FileSystemAuthentication(IConfiguration configuration, IHttpContextAccessor http)
 	: BearerAuthenticationProvider
 {
 	protected override async Task OnAuthenticate()
 	{
-		if (await authentication.SelectIdentity() is not null)
-			return;
-
 		var section = configuration.GetSection("serviceModel:storage:fileSystem");
 
 		if (section is null)
@@ -24,11 +21,15 @@ internal sealed class FileSystemAuthentication(IAuthenticationService authentica
 
 		if (string.Equals(Token, token, StringComparison.Ordinal))
 		{
-			var dto = Dto.Create<IUpdateIdentityDto>();
-
-			dto.Identity = new FileSystemUser { Token = token };
-
-			await authentication.UpdateIdentity(dto);
+			if (http.HttpContext is not null)
+			{
+				http.HttpContext.User = new DefaultPrincipal(new HttpIdentity(new FileSystemUser { Token = token })
+				{
+					IsAuthenticated = true
+				});
+			}
 		}
+
+		await Task.CompletedTask;
 	}
 }
