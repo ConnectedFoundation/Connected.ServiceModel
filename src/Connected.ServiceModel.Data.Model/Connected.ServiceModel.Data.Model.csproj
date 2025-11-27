@@ -8,7 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Sdk\Connected.Sdk.csproj" />
+		<ProjectReference
+			Include="../../../Connected.Core/src/Connected.Model/Connected.Model.csproj" />
 	</ItemGroup>
 
 </Project>
