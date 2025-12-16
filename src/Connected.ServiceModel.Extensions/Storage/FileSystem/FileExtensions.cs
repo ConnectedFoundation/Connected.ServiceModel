@@ -3,6 +3,7 @@ using Connected.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Connected.ServiceModel.Storage;
+
 public static class FileExtensions
 {
 	public static async Task Ensure(this IFileService service, string directory, string fileName, byte[]? content)

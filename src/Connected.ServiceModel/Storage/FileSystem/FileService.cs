@@ -38,6 +38,11 @@ internal sealed class FileService(IServiceProvider services)
 		return Invoke(GetOperation<SelectFile>(), dto);
 	}
 
+	public Task<FileInfo?> SelectMetaData(IFileDto dto)
+	{
+		return Invoke(GetOperation<SelectFileMetaData>(), dto);
+	}
+
 	public async Task Update(IUpdateFileDto dto)
 	{
 		await Invoke(GetOperation<UpdateFile>(), dto);

@@ -28,7 +28,12 @@ internal sealed class FileSystemConfiguration
 		var result = RootFolder;
 
 		if (path is not null)
+		{
+			if (path.StartsWith('\\') || path.StartsWith('/'))
+				path = path[1..];
+
 			result = Path.Combine(result, path);
+		}
 
 		if (fileName is not null)
 			result = Path.Combine(result, fileName);

@@ -22,6 +22,8 @@ public interface IFileService
 	[ServiceOperation(ServiceOperationVerbs.Get)]
 	Task<byte[]?> Select(IFileDto dto);
 
+	Task<FileInfo?> SelectMetaData(IFileDto dto);
+
 	[ServiceOperation(ServiceOperationVerbs.Get)]
 	Task<bool> Exists(IFileDto dto);
 
