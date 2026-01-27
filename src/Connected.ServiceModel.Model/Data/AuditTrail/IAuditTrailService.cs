@@ -14,6 +14,9 @@ public interface IAuditTrailService
 	[ServiceOperation(ServiceOperationVerbs.Get)]
 	Task<IImmutableList<IAuditTrail>> Query(IEntityDto dto);
 
+	[ServiceOperation(ServiceOperationVerbs.Get), ServiceUrl(ServiceOperations.Lookup)]
+	Task<IImmutableList<IAuditTrail>> Query(IPrimaryKeyListDto<long> dto);
+
 	[ServiceOperation(ServiceOperationVerbs.Delete)]
 	Task Delete(IEntityDto dto);
 }

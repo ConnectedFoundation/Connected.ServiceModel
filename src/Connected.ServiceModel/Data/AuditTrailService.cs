@@ -22,4 +22,9 @@ internal sealed class AuditTrailService(IServiceProvider services)
 	{
 		return await Invoke(GetOperation<Query>(), dto);
 	}
+
+	public async Task<IImmutableList<IAuditTrail>> Query(IPrimaryKeyListDto<long> dto)
+	{
+		return await Invoke(GetOperation<Lookup>(), dto);
+	}
 }
