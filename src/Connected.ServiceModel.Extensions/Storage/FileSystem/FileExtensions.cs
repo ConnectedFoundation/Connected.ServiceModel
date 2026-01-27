@@ -2,7 +2,7 @@
 using Connected.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Connected.ServiceModel.Storage;
+namespace Connected.ServiceModel.Storage.FileSystem;
 
 public static class FileExtensions
 {

@@ -1,7 +1,7 @@
 ﻿using Connected.ServiceModel.Storage.Dtos;
 using Connected.Services;
 
-namespace Connected.ServiceModel.Storage;
+namespace Connected.ServiceModel.Storage.FileSystem;
 public static class DirectoryExtensions
 {
 	public static async Task Ensure(this IDirectoryService service, string path)

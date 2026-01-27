@@ -6,7 +6,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.FileProviders.Physical;
 using Microsoft.Extensions.Primitives;
 
-namespace Connected.ServiceModel.Storage.Storage.FileSystem;
+namespace Connected.ServiceModel.Storage.FileSystem;
 
 internal sealed class AvatarFileProvider
 	: IFileProvider

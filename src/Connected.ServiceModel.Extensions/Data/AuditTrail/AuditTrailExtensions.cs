@@ -31,7 +31,7 @@ public static class AuditTrailExtensions
 			items.Add(property.Name, property.GetValue(entity));
 		}
 
-		await Write(service, verb, keyAttribute.Key, entity.Id, items);
+		await service.Write(verb, keyAttribute.Key, entity.Id, items);
 	}
 
 	public static async Task Write(this IAuditTrailService service, IAuthenticationService authentication, AuditTrailVerb verb, string entity, object entityId, string? property, object? value)
@@ -41,7 +41,7 @@ public static class AuditTrailExtensions
 		if (property is not null)
 			properties.Add(property, value);
 
-		await Write(service, verb, entity, entityId, properties);
+		await service.Write(verb, entity, entityId, properties);
 	}
 
 	public static async Task Write(this IAuditTrailService service, AuditTrailVerb verb, string entity, object entityId, Dictionary<string, object?> properties)
@@ -79,7 +79,7 @@ public static class AuditTrailExtensions
 
 	private static async Task WriteUpdate(IAuditTrailService service, string entity, object entityId, Dictionary<string, object?> properties)
 	{
-		var existing = await Query(service, entity, entityId);
+		var existing = await service.Query(entity, entityId);
 
 		if (existing.Count != 0)
 			existing = existing.OrderByDescending(f => f.Id).ToImmutableList();

@@ -1,9 +1,9 @@
 ﻿using Connected.Runtime;
-using Connected.ServiceModel.Storage.Storage.FileSystem;
+using Connected.ServiceModel.Storage.FileSystem;
 using Microsoft.Extensions.FileProviders;
 using System.Collections.Immutable;
 
-namespace Connected.ServiceModel.Storage;
+namespace Connected.ServiceModel;
 
 internal sealed class Bootstrapper
 	: Startup
