@@ -1,9 +1,10 @@
-﻿using Connected.ServiceModel.Storage.Dtos;
+﻿using Connected.Notifications;
+using Connected.ServiceModel.Storage.Dtos;
 using Connected.Services;
 
 namespace Connected.ServiceModel.Storage.FileSystem.Ops;
 
-internal sealed class DeleteFile(FileSystemConfiguration configuration) : ServiceAction<IDeleteFileDto>
+internal sealed class DeleteFile(FileSystemConfiguration configuration, IFileService files, IEventService events) : ServiceAction<IDeleteFileDto>
 {
 	protected override async Task OnInvoke()
 	{
@@ -12,6 +13,6 @@ internal sealed class DeleteFile(FileSystemConfiguration configuration) : Servic
 		if (System.IO.File.Exists(fullPath))
 			System.IO.File.Delete(fullPath);
 
-		await Task.CompletedTask;
+		await events.Deleted(this, files, $"{Dto.Directory}/{Dto.FileName}");
 	}
 }
