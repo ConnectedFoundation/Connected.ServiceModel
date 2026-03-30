@@ -1,20 +1,25 @@
-﻿using Connected.Authentication;
-using Connected.Collections.Concurrent;
+﻿using Connected.Collections.Concurrent;
 using Connected.Collections.Queues;
 using Connected.Entities;
 using Connected.ServiceModel.Cdn.Smtp;
+using Connected.ServiceModel.Cdn.Smtp.Agent;
 using Connected.ServiceModel.Cdn.Smtp.Recipients;
 using Connected.ServiceModel.Cdn.Smtp.Recipients.Dtos;
 using Connected.ServiceModel.Cdn.SmtpService.Connections;
 using Connected.ServiceModel.Cdn.SmtpService.Connections.Dtos;
 using Connected.Services;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 
 namespace Connected.ServiceModel.Cdn.SmtpService;
-internal sealed class SmtpMessageQueueClient(ISmtpMessageService messages, ISmtpMessageRecipientService recipients, ISmtpConnectionService connections,
-	SmtpMessageProcessor processor, ILogger<SmtpMessageQueueClient> logger)
+
+internal sealed class SmtpMessageQueueClient(
+	ISmtpMessageService messages,
+	ISmtpMessageRecipientService recipients,
+	ISmtpConnectionService connections,
+	SmtpMessageProcessor processor,
+	IQueueService queue,
+	ILogger<SmtpMessageQueueClient> logger)
 	: QueueClient<IPrimaryKeyDto<long>>
 {
 	private TimeoutTask? _task;
@@ -79,30 +84,24 @@ internal sealed class SmtpMessageQueueClient(ISmtpMessageService messages, ISmtp
 
 	private async Task Ping()
 	{
-		using var scope = await Scope.Create().WithSystemIdentity();
-
-		var queue = scope.ServiceProvider.GetRequiredService<IQueueService>();
 		var dto = Dto.Create<IUpdateDto>();
 
 		dto.Value = Message.PopReceipt.GetValueOrDefault();
 		dto.NextVisible = TimeSpan.FromSeconds(15);
 
-		await queue.Update(dto);
+		await queue.Update<SmtpMessageQueueMessage, SmtpMessageQueueCache>(dto);
 
 		logger.LogWarning("{Message} ({Id})", SR.WrnPingNeeded, Dto.Id);
 	}
 
 	private async Task Lifespan()
 	{
-		using var scope = await Scope.Create().WithSystemIdentity();
-
-		var queue = scope.ServiceProvider.GetRequiredService<IQueueService>();
 		var dto = Dto.Create<IUpdateDto>();
 
 		dto.Value = Message.PopReceipt.GetValueOrDefault();
 		dto.NextVisible = TimeSpan.FromMinutes(1);
 
-		await queue.Update(dto);
+		await queue.Update<SmtpMessageQueueMessage, SmtpMessageQueueCache>(dto);
 
 		logger.LogWarning("{Message} ({Id})", SR.WrnLifespan, Dto.Id);
 	}
@@ -156,14 +155,11 @@ internal sealed class SmtpMessageQueueClient(ISmtpMessageService messages, ISmtp
 
 		await recipients.Update(dto);
 
-		using var scope = await Scope.Create().WithSystemIdentity();
-		var queue = scope.ServiceProvider.GetRequiredService<IQueueService>();
 		var updateQueueDto = Dto.Create<IUpdateDto>();
 
 		updateQueueDto.NextVisible = TimeSpan.FromSeconds(delay);
 		updateQueueDto.Value = Message.PopReceipt.GetValueOrDefault();
 
-		await queue.Update(updateQueueDto);
-		await scope.Commit();
+		await queue.Update<SmtpMessageQueueMessage, SmtpMessageQueueCache>(updateQueueDto);
 	}
 }

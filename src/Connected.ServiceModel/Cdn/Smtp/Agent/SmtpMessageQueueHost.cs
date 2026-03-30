@@ -1,12 +1,12 @@
 ﻿using Connected.Collections.Queues;
+using Connected.ServiceModel.Cdn.Smtp.Agent;
 
 namespace Connected.ServiceModel.Cdn.SmtpService;
-internal sealed class SmtpMessageQueueHost : QueueHost
-{
-	public const string SmtpMessageQueueName = "SmtpMessages";
 
+internal sealed class SmtpMessageQueueHost
+	: QueueHost<SmtpMessageQueueMessage, SmtpMessageQueueCache>
+{
 	public SmtpMessageQueueHost()
-		: base(SmtpMessageQueueName, 4)
 	{
 		NextVisibleInterval = TimeSpan.FromSeconds(60);
 	}
