@@ -8,19 +8,21 @@ using Connected.ServiceModel.Cdn.Smtp.Recipients.Dtos;
 using Connected.ServiceModel.Cdn.SmtpService.Connections;
 using Connected.ServiceModel.Cdn.SmtpService.Connections.Dtos;
 using Connected.Services;
+using Connected.Storage;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 
 namespace Connected.ServiceModel.Cdn.SmtpService;
 
 internal sealed class SmtpMessageQueueClient(
+	IStorageProvider storage,
+	ISmtpMessageQueueCache cache,
 	ISmtpMessageService messages,
 	ISmtpMessageRecipientService recipients,
 	ISmtpConnectionService connections,
 	SmtpMessageProcessor processor,
-	IQueueService queue,
 	ILogger<SmtpMessageQueueClient> logger)
-	: QueueClient<IPrimaryKeyDto<long>>
+	: QueueClient<IPrimaryKeyDto<long>>(storage, cache)
 {
 	private TimeoutTask? _task;
 	protected override async Task OnInvoke()
@@ -84,26 +86,16 @@ internal sealed class SmtpMessageQueueClient(
 
 	private async Task Ping()
 	{
-		var dto = Dto.Create<IUpdateDto>();
-
-		dto.Value = Message.PopReceipt.GetValueOrDefault();
-		dto.NextVisible = TimeSpan.FromSeconds(15);
-
-		await queue.Update<SmtpMessageQueueMessage, SmtpMessageQueueCache>(dto);
-
 		logger.LogWarning("{Message} ({Id})", SR.WrnPingNeeded, Dto.Id);
+
+		await Ping(TimeSpan.FromSeconds(15));
 	}
 
 	private async Task Lifespan()
 	{
-		var dto = Dto.Create<IUpdateDto>();
-
-		dto.Value = Message.PopReceipt.GetValueOrDefault();
-		dto.NextVisible = TimeSpan.FromMinutes(1);
-
-		await queue.Update<SmtpMessageQueueMessage, SmtpMessageQueueCache>(dto);
-
 		logger.LogWarning("{Message} ({Id})", SR.WrnLifespan, Dto.Id);
+
+		await Ping(TimeSpan.FromMinutes(1));
 	}
 
 	private async Task SendMail(ISmtpConnection connection, ISmtpMessage message, ISmtpMessageRecipient recipient)
@@ -154,12 +146,6 @@ internal sealed class SmtpMessageQueueClient(
 		dto.Status = SmtpMessageRecipientStatus.Error;
 
 		await recipients.Update(dto);
-
-		var updateQueueDto = Dto.Create<IUpdateDto>();
-
-		updateQueueDto.NextVisible = TimeSpan.FromSeconds(delay);
-		updateQueueDto.Value = Message.PopReceipt.GetValueOrDefault();
-
-		await queue.Update<SmtpMessageQueueMessage, SmtpMessageQueueCache>(updateQueueDto);
+		await Ping(TimeSpan.FromSeconds(delay));
 	}
 }
