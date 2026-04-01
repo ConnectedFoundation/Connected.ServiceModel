@@ -22,7 +22,7 @@ internal sealed class SmtpMessageQueueClient(
 	ISmtpConnectionService connections,
 	SmtpMessageProcessor processor,
 	ILogger<SmtpMessageQueueClient> logger)
-	: QueueClient<IPrimaryKeyDto<long>>(storage, cache)
+	: QueueClient<SmtpMessageQueueMessage, IPrimaryKeyDto<long>>(storage, cache)
 {
 	private TimeoutTask? _task;
 	protected override async Task OnInvoke()
