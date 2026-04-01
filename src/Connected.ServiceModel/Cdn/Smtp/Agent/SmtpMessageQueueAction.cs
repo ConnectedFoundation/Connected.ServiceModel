@@ -2,27 +2,23 @@
 using Connected.Collections.Queues;
 using Connected.Entities;
 using Connected.ServiceModel.Cdn.Smtp;
-using Connected.ServiceModel.Cdn.Smtp.Agent;
 using Connected.ServiceModel.Cdn.Smtp.Recipients;
 using Connected.ServiceModel.Cdn.Smtp.Recipients.Dtos;
 using Connected.ServiceModel.Cdn.SmtpService.Connections;
 using Connected.ServiceModel.Cdn.SmtpService.Connections.Dtos;
 using Connected.Services;
-using Connected.Storage;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 
 namespace Connected.ServiceModel.Cdn.SmtpService;
 
-internal sealed class SmtpMessageQueueClient(
-	IStorageProvider storage,
-	ISmtpMessageQueueCache cache,
+internal sealed class SmtpMessageQueueAction(
 	ISmtpMessageService messages,
 	ISmtpMessageRecipientService recipients,
 	ISmtpConnectionService connections,
 	SmtpMessageProcessor processor,
-	ILogger<SmtpMessageQueueClient> logger)
-	: QueueClient<SmtpMessageQueueMessage, IPrimaryKeyDto<long>>(storage, cache)
+	ILogger<SmtpMessageQueueAction> logger)
+	: QueueAction<IPrimaryKeyDto<long>>
 {
 	private TimeoutTask? _task;
 	protected override async Task OnInvoke()

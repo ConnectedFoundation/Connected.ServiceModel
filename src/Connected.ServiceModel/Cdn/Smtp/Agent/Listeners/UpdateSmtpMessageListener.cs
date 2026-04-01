@@ -8,7 +8,7 @@ namespace Connected.ServiceModel.Cdn.SmtpService.Listeners;
 
 [Middleware<ISmtpMessageService>(nameof(ServiceEvents.Updated))]
 internal sealed class UpdateSmtpMessageListener(
-	SmtpMessageQueueClient client,
+	SmtpMessageQueueContext queue,
 	ISmtpMessageService smtp,
 	ISmtpMessageRecipientService recipients)
 	: EventListener<IPrimaryKeyDto<long>>
@@ -50,7 +50,7 @@ internal sealed class UpdateSmtpMessageListener(
 		var rcp = await recipients.Query(Dto.CreateHead(message.Id));
 
 		foreach (var recipient in rcp)
-			await client.Invoke(Dto.CreatePrimaryKey(recipient.Id));
+			await queue.Invoke(Dto.CreatePrimaryKey(recipient.Id));
 	}
 
 	private async Task Delete(ISmtpMessage message)
