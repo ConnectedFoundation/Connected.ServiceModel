@@ -1,4 +1,4 @@
-﻿using Connected.ServiceModel.Cdn.SmtpService.Dkim.Dtos;
+﻿using Connected.ServiceModel.Cdn.Smtp.Agent.Dkim.Dtos;
 using Connected.Services;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
@@ -6,7 +6,7 @@ using MimeKit.Cryptography;
 using System.Collections.Immutable;
 using System.Text;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Dkim.Ops;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Dkim.Ops;
 internal sealed class Update(IConfiguration configuration)
 	: ServiceAction<IUpdateDkimDto>
 {

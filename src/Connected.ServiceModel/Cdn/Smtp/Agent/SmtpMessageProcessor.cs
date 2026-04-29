@@ -1,16 +1,16 @@
 ﻿using Connected.ServiceModel.Cdn.Smtp;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Configuration;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Dkim;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Dkim.Dtos;
 using Connected.ServiceModel.Cdn.Smtp.Headers;
 using Connected.ServiceModel.Cdn.Smtp.Recipients;
 using Connected.ServiceModel.Cdn.Smtp.Text;
-using Connected.ServiceModel.Cdn.SmtpService.Configuration;
-using Connected.ServiceModel.Cdn.SmtpService.Dkim;
-using Connected.ServiceModel.Cdn.SmtpService.Dkim.Dtos;
 using Connected.ServiceModel.Storage;
 using Connected.ServiceModel.Storage.Dtos;
 using Connected.Services;
 using MimeKit;
 
-namespace Connected.ServiceModel.Cdn.SmtpService;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent;
 internal sealed class SmtpMessageProcessor(ISmtpMessageHeaderService headers, IDkimService dkim,
 	SmtpConfiguration configuration, ISmtpMessageTextService text, IFileService files)
 {

@@ -1,8 +1,8 @@
-﻿using Connected.ServiceModel.Cdn.SmtpService.Connections.Dtos;
+﻿using Connected.ServiceModel.Cdn.Smtp.Agent.Connections.Dtos;
 using Connected.Services;
 using Connected.Threading;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Connections.Ops;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Connections.Ops;
 internal class Select(ISmtpConnectionCache cache)
 	: ServiceFunction<ISelectSmtpConnectionDto, ISmtpConnection?>
 {

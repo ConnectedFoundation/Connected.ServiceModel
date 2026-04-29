@@ -1,6 +1,6 @@
 ﻿using MimeKit;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Connections;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Connections;
 
 internal enum SmtpConnectionState
 {

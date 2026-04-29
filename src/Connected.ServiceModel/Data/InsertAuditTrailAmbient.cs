@@ -1,10 +1,11 @@
 ﻿using Connected.Authentication;
 using Connected.Data.AuditTrail;
+using Connected.ServiceModel.Data.AuditTrail;
 using Connected.ServiceModel.Data.AuditTrail.Dtos;
 using Connected.Services;
 using Connected.Storage.Transactions;
 
-namespace Connected.ServiceModel.Data.AuditTrail;
+namespace Connected.ServiceModel.Data;
 
 internal sealed class InsertAuditTrailAmbient(ITransactionContext transactions, IAuthenticationService authentication, IAuditTrailContext context)
 	: AmbientProvider<IInsertAuditTrailDto>, IInsertAuditTrailAmbient

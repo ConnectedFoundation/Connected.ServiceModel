@@ -1,6 +1,5 @@
 ﻿using Connected.Entities;
 using Connected.Notifications;
-using Connected.ServiceModel.Cdn.SmtpMessages;
 using Connected.Services;
 using Connected.Storage;
 

@@ -1,8 +1,9 @@
 ﻿using Connected.Annotations;
 using Connected.Annotations.Entities;
 using Connected.Entities;
+using Connected.ServiceModel.Data.AuditTrail;
 
-namespace Connected.ServiceModel.Data.AuditTrail;
+namespace Connected.ServiceModel.Data;
 
 [Table(Schema = SchemaAttribute.CoreSchema)]
 internal sealed record AuditTrailEntry : EntityContainer<long>, IAuditTrail

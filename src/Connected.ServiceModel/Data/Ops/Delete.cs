@@ -1,8 +1,9 @@
 ﻿using Connected.Notifications;
+using Connected.ServiceModel.Data.AuditTrail;
 using Connected.Services;
 using Connected.Storage;
 
-namespace Connected.ServiceModel.Data.AuditTrail.Ops;
+namespace Connected.ServiceModel.Data.Ops;
 
 internal sealed class Delete(IStorageProvider storage, IAuditTrailService auditTrail, IEventService events) : ServiceAction<IEntityDto>
 {

@@ -1,6 +1,6 @@
 ﻿using Connected.Services;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Connections.Ops;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Connections.Ops;
 internal sealed class Clean(ISmtpConnectionCache cache)
 	: ServiceAction<IDto>
 {

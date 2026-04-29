@@ -1,5 +1,4 @@
 ﻿using Connected.Entities;
-using Connected.ServiceModel.Cdn.SmtpMessages;
 using Connected.Services;
 using Connected.Storage;
 using System.Collections.Immutable;

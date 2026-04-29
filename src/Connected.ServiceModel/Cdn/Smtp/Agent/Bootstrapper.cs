@@ -1,8 +1,8 @@
 ﻿using Connected.Runtime;
-using Connected.ServiceModel.Cdn.SmtpService.Configuration;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Connected.ServiceModel.Cdn.SmtpService;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent;
 internal sealed class Bootstrapper : Startup
 {
 	protected override void OnConfigureServices(IServiceCollection services)

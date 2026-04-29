@@ -1,9 +1,10 @@
-﻿using Connected.ServiceModel.Data.AuditTrail.Dtos;
-using Connected.ServiceModel.Data.AuditTrail.Ops;
+﻿using Connected.ServiceModel.Data.AuditTrail;
+using Connected.ServiceModel.Data.AuditTrail.Dtos;
+using Connected.ServiceModel.Data.Ops;
 using Connected.Services;
 using System.Collections.Immutable;
 
-namespace Connected.ServiceModel.Data.AuditTrail;
+namespace Connected.ServiceModel.Data;
 
 internal sealed class AuditTrailService(IServiceProvider services)
 	: Service(services), IAuditTrailService

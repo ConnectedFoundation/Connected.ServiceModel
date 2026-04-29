@@ -1,9 +1,8 @@
 ﻿using Connected.Collections.Queues;
-using Connected.ServiceModel.Cdn.Smtp.Agent;
 using Connected.Services;
 using Connected.Storage;
 
-namespace Connected.ServiceModel.Cdn.SmtpService;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent;
 
 internal sealed class SmtpMessageQueueContext(
 	IStorageProvider storage,

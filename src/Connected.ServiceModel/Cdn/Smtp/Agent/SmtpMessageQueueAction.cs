@@ -1,16 +1,15 @@
 ﻿using Connected.Collections.Concurrent;
 using Connected.Collections.Queues;
 using Connected.Entities;
-using Connected.ServiceModel.Cdn.Smtp;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Connections;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Connections.Dtos;
 using Connected.ServiceModel.Cdn.Smtp.Recipients;
 using Connected.ServiceModel.Cdn.Smtp.Recipients.Dtos;
-using Connected.ServiceModel.Cdn.SmtpService.Connections;
-using Connected.ServiceModel.Cdn.SmtpService.Connections.Dtos;
 using Connected.Services;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 
-namespace Connected.ServiceModel.Cdn.SmtpService;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent;
 
 internal sealed class SmtpMessageQueueAction(
 	ISmtpMessageService messages,
@@ -38,9 +37,9 @@ internal sealed class SmtpMessageQueueAction(
 			return;
 		}
 
-		await Ping();
+		await Lease();
 
-		_task = new TimeoutTask(Ping, TimeSpan.FromSeconds(10), Lifespan, TimeSpan.FromMinutes(1), Cancel);
+		_task = new TimeoutTask(Lease, TimeSpan.FromSeconds(10), Lifespan, TimeSpan.FromMinutes(1), Cancel);
 
 		_task.Start();
 
@@ -80,18 +79,18 @@ internal sealed class SmtpMessageQueueAction(
 		await SendMail(connection, message, recipient);
 	}
 
-	private async Task Ping()
+	private async Task Lease()
 	{
 		logger.LogWarning("{Message} ({Id})", SR.WrnPingNeeded, Dto.Id);
 
-		await Ping(TimeSpan.FromSeconds(15));
+		await Ping();
 	}
 
 	private async Task Lifespan()
 	{
 		logger.LogWarning("{Message} ({Id})", SR.WrnLifespan, Dto.Id);
 
-		await Ping(TimeSpan.FromMinutes(1));
+		await Lease();
 	}
 
 	private async Task SendMail(ISmtpConnection connection, ISmtpMessage message, ISmtpMessageRecipient recipient)
@@ -111,14 +110,20 @@ internal sealed class SmtpMessageQueueAction(
 			var policy = new ResendPolicy(ex);
 
 			await Fail(recipient, ex.Message, policy.Delay);
+
+			throw;
 		}
 		catch (OperationCanceledException)
 		{
 			await Fail(recipient, SR.ErrSendMailCancelled, 60);
+
+			throw;
 		}
 		catch (Exception ex)
 		{
 			await Fail(recipient, ex.Message, 60);
+
+			throw;
 		}
 	}
 
@@ -142,6 +147,6 @@ internal sealed class SmtpMessageQueueAction(
 		dto.Status = SmtpMessageRecipientStatus.Error;
 
 		await recipients.Update(dto);
-		await Ping(TimeSpan.FromSeconds(delay));
+		await Lease();
 	}
 }

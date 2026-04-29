@@ -1,8 +1,9 @@
-﻿using System.Collections.Concurrent;
+﻿using Connected.ServiceModel.Cdn.SmtpService.Dns;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.NetworkInformation;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Dns;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Dns;
 
 internal static class DnsResolve
 {

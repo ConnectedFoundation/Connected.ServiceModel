@@ -1,7 +1,7 @@
 ﻿using Connected.Services;
 using System.ComponentModel.DataAnnotations;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Connections.Dtos;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Connections.Dtos;
 internal sealed class SelectSmtpConnectionDto : Dto, ISelectSmtpConnectionDto
 {
 	[Required, MaxLength(128)]

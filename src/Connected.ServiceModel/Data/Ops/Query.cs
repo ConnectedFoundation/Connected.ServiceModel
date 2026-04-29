@@ -1,10 +1,11 @@
 ﻿using Connected.Data.AuditTrail;
 using Connected.Entities;
+using Connected.ServiceModel.Data.AuditTrail;
 using Connected.Services;
 using Connected.Storage;
 using System.Collections.Immutable;
 
-namespace Connected.ServiceModel.Data.AuditTrail.Ops;
+namespace Connected.ServiceModel.Data.Ops;
 
 internal sealed class Query(IStorageProvider storage)
 	: ServiceFunction<IEntityDto, IImmutableList<IAuditTrail>>

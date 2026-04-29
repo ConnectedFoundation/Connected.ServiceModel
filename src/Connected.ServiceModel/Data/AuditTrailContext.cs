@@ -1,4 +1,6 @@
-﻿namespace Connected.ServiceModel.Data.AuditTrail;
+﻿using Connected.ServiceModel.Data.AuditTrail;
+
+namespace Connected.ServiceModel.Data;
 
 internal sealed class AuditTrailContext : IAuditTrailContext
 {

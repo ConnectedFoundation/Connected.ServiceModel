@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Connected.ServiceModel.Cdn.SmtpService {
+namespace Connected.ServiceModel.Cdn.Smtp.Agent {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace Connected.ServiceModel.Cdn.SmtpService {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SR {
@@ -39,7 +39,7 @@ namespace Connected.ServiceModel.Cdn.SmtpService {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Connected.ServiceModel.Cdn.SmtpService.SR", typeof(SR).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Connected.ServiceModel.Cdn.Smtp.Agent.SR", typeof(SR).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

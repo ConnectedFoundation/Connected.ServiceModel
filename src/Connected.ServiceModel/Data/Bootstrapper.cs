@@ -1,7 +1,8 @@
 ﻿using Connected.Runtime;
+using Connected.ServiceModel.Data.AuditTrail;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Connected.ServiceModel.Data.AuditTrail;
+namespace Connected.ServiceModel.Data;
 
 internal sealed class Boot : Startup
 {

@@ -1,4 +1,4 @@
-﻿namespace Connected.ServiceModel.Cdn.SmtpService.Dns;
+﻿namespace Connected.ServiceModel.Cdn.Smtp.Agent.Dns;
 
 internal class Record(DataBuffer buffer)
 	: DnsEntry(buffer)

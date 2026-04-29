@@ -1,9 +1,8 @@
 ﻿using Connected.Annotations;
 using Connected.Annotations.Entities;
 using Connected.Entities;
-using Connected.ServiceModel.Cdn.Smtp;
 
-namespace Connected.ServiceModel.Cdn.SmtpMessages;
+namespace Connected.ServiceModel.Cdn.Smtp;
 
 [Table(Schema = SchemaAttribute.CoreSchema)]
 internal sealed record SmtpMessage : ConsistentEntity<long>, ISmtpMessage

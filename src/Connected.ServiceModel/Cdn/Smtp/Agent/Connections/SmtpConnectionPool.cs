@@ -1,7 +1,7 @@
-﻿using Connected.ServiceModel.Cdn.SmtpService.Configuration;
+﻿using Connected.ServiceModel.Cdn.Smtp.Agent.Configuration;
 using System.Collections.Concurrent;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Connections;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Connections;
 internal sealed class SmtpConnectionPool(SmtpConfiguration configuration)
 {
 	private const int ConcurrentLimit = 5;

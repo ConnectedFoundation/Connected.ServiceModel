@@ -18,6 +18,11 @@ internal sealed class SmtpMessageService(IServiceProvider services)
 		return await Invoke(GetOperation<Insert>(), dto);
 	}
 
+	public async Task Patch(IPatchDto<long> dto)
+	{
+		await Invoke(GetOperation<Patch>(), dto);
+	}
+
 	public async Task<IImmutableList<ISmtpMessage>> Query(IQueryDto? dto)
 	{
 		return await Invoke(GetOperation<Query>(), dto ?? QueryDto.NoPaging);

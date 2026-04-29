@@ -4,7 +4,7 @@ using Connected.ServiceModel.Cdn.Smtp;
 using Connected.ServiceModel.Cdn.Smtp.Recipients;
 using Connected.Services;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Listeners;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Listeners;
 
 [Middleware<ISmtpMessageService>(nameof(ServiceEvents.Updated))]
 internal sealed class UpdateSmtpMessageListener(

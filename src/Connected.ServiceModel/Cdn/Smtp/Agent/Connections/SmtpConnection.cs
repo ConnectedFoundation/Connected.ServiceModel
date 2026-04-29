@@ -1,10 +1,10 @@
-﻿using Connected.ServiceModel.Cdn.SmtpService.Dns;
+﻿using Connected.ServiceModel.Cdn.Smtp.Agent.Dns;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using System.Net.Sockets;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Connections;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Connections;
 
 internal sealed class SmtpConnection(string domain) : ISmtpConnection
 {

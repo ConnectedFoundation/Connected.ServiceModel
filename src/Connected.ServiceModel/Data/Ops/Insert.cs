@@ -1,10 +1,11 @@
 ﻿using Connected.Data.AuditTrail;
 using Connected.Notifications;
+using Connected.ServiceModel.Data.AuditTrail;
 using Connected.ServiceModel.Data.AuditTrail.Dtos;
 using Connected.Services;
 using Connected.Storage;
 
-namespace Connected.ServiceModel.Data.AuditTrail.Ops;
+namespace Connected.ServiceModel.Data.Ops;
 
 internal sealed class Insert(IStorageProvider storage, IAuditTrailService auditTrail, IEventService events, IInsertAuditTrailAmbient ambient)
 	: ServiceFunction<IInsertAuditTrailDto, long>

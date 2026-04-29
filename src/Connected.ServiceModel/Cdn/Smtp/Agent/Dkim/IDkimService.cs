@@ -1,7 +1,7 @@
 ﻿using Connected.Annotations;
-using Connected.ServiceModel.Cdn.SmtpService.Dkim.Dtos;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Dkim.Dtos;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Dkim;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Dkim;
 
 [Service]
 internal interface IDkimService

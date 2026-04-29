@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Configuration;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Configuration;
 internal sealed class SmtpConfiguration
 {
 	public SmtpConfiguration(IConfiguration configuration)

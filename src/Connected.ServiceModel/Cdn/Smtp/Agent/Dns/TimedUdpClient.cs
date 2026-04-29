@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Dns;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Dns;
 
 internal sealed class TimedUdpClient : UdpClient
 {

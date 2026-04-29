@@ -1,6 +1,7 @@
 ﻿using Connected.Net.Rest;
+using Connected.ServiceModel.Data.AuditTrail;
 
-namespace Connected.ServiceModel.Data.AuditTrail;
+namespace Connected.ServiceModel.Data;
 
 internal sealed class AuditTrailRequestArgumentHandler(IAuditTrailContext context) : RequestArgumentHandler
 {

@@ -1,7 +1,7 @@
 ﻿using Connected.Annotations;
-using Connected.ServiceModel.Cdn.SmtpService.Connections.Dtos;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Connections.Dtos;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Connections;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Connections;
 
 [Service]
 internal interface ISmtpConnectionService

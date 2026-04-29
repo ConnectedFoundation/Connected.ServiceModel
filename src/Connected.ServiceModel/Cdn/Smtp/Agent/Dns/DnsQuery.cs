@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Connected.ServiceModel.Cdn.Smtp.Agent;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Dns;
+using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 

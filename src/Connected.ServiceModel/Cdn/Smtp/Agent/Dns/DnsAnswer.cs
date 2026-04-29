@@ -1,4 +1,6 @@
-﻿namespace Connected.ServiceModel.Cdn.SmtpService.Dns;
+﻿using Connected.ServiceModel.Cdn.SmtpService.Dns;
+
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Dns;
 
 public enum ReturnCode
 {

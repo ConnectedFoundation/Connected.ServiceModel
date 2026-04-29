@@ -14,6 +14,9 @@ public interface ISmtpMessageService
 	[ServiceOperation(ServiceOperationVerbs.Put)]
 	Task Update(IUpdateSmtpMessageDto dto);
 
+	[ServiceOperation(ServiceOperationVerbs.Patch)]
+	Task Patch(IPatchDto<long> dto);
+
 	[ServiceOperation(ServiceOperationVerbs.Delete)]
 	Task Delete(IPrimaryKeyDto<long> dto);
 

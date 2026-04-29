@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Dns;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Dns;
 
 internal sealed class AaaaRecord(DataBuffer buffer)
 	: IRecordData

@@ -1,4 +1,4 @@
-﻿namespace Connected.ServiceModel.Cdn.SmtpService;
+﻿namespace Connected.ServiceModel.Cdn.Smtp.Agent;
 internal sealed class ResendPolicy
 {
 	private const int Day = 1440;

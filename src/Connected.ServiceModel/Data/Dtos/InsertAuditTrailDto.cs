@@ -1,8 +1,10 @@
 ﻿using Connected.Annotations.Entities;
+using Connected.ServiceModel.Data.AuditTrail;
+using Connected.ServiceModel.Data.AuditTrail.Dtos;
 using Connected.Services;
 using System.ComponentModel.DataAnnotations;
 
-namespace Connected.ServiceModel.Data.AuditTrail.Dtos;
+namespace Connected.ServiceModel.Data.Dtos;
 
 [Table(Schema = SchemaAttribute.CoreSchema)]
 internal sealed class InsertAuditTrailDto : EntityDto, IInsertAuditTrailDto

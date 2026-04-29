@@ -1,4 +1,4 @@
-﻿namespace Connected.ServiceModel.Cdn.SmtpService;
+﻿namespace Connected.ServiceModel.Cdn.Smtp.Agent;
 
 public enum SmtpExceptionType
 {

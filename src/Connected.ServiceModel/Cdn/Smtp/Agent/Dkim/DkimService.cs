@@ -1,8 +1,8 @@
-﻿using Connected.ServiceModel.Cdn.SmtpService.Dkim.Dtos;
-using Connected.ServiceModel.Cdn.SmtpService.Dkim.Ops;
+﻿using Connected.ServiceModel.Cdn.Smtp.Agent.Dkim.Dtos;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Dkim.Ops;
 using Connected.Services;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Dkim;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Dkim;
 internal sealed class DkimService(IServiceProvider services)
 		: Service(services), IDkimService
 

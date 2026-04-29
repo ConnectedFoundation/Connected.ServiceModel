@@ -1,8 +1,8 @@
-﻿using Connected.ServiceModel.Cdn.SmtpService.Connections.Dtos;
-using Connected.ServiceModel.Cdn.SmtpService.Connections.Ops;
+﻿using Connected.ServiceModel.Cdn.Smtp.Agent.Connections.Dtos;
+using Connected.ServiceModel.Cdn.Smtp.Agent.Connections.Ops;
 using Connected.Services;
 
-namespace Connected.ServiceModel.Cdn.SmtpService.Connections;
+namespace Connected.ServiceModel.Cdn.Smtp.Agent.Connections;
 internal sealed class SmtpConnectionService(IServiceProvider services)
 		: Service(services), ISmtpConnectionService
 {
