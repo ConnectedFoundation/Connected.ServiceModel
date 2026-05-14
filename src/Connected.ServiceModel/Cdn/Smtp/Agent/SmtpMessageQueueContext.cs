@@ -6,7 +6,7 @@ namespace Connected.ServiceModel.Cdn.Smtp.Agent;
 
 internal sealed class SmtpMessageQueueContext(
 	IStorageProvider storage,
-	IQueueMessageCache cache)
+	ISmtpMessageQueueCache cache)
 		: QueueContext<SmtpMessageQueueMessage, SmtpMessageQueueAction, IPrimaryKeyDto<long>>(storage, cache)
 {
 
