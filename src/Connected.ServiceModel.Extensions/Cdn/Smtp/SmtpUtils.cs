@@ -1,6 +1,7 @@
 ﻿using MimeKit;
 
 namespace Connected.ServiceModel.Cdn.Smtp;
+
 public static class SmtpUtils
 {
 	public static string? ResolveEmailDomain(string email)
