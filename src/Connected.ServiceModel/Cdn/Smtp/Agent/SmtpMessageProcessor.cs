@@ -1,5 +1,4 @@
-﻿using Connected.ServiceModel.Cdn.Smtp;
-using Connected.ServiceModel.Cdn.Smtp.Agent.Configuration;
+﻿using Connected.ServiceModel.Cdn.Smtp.Agent.Configuration;
 using Connected.ServiceModel.Cdn.Smtp.Agent.Dkim;
 using Connected.ServiceModel.Cdn.Smtp.Agent.Dkim.Dtos;
 using Connected.ServiceModel.Cdn.Smtp.Headers;
@@ -8,6 +7,7 @@ using Connected.ServiceModel.Cdn.Smtp.Text;
 using Connected.ServiceModel.Storage;
 using Connected.ServiceModel.Storage.Dtos;
 using Connected.Services;
+using Microsoft.AspNetCore.StaticFiles;
 using MimeKit;
 
 namespace Connected.ServiceModel.Cdn.Smtp.Agent;
@@ -77,6 +77,7 @@ internal sealed class SmtpMessageProcessor(ISmtpMessageHeaderService headers, ID
 		dto.Path = Path.Combine(CdnMetaData.SmtpMessageAttachmentsFolder, message.Id.ToString());
 
 		var attachments = await files.Query(dto);
+		var provider = new FileExtensionContentTypeProvider();
 
 		foreach (var attachment in attachments)
 		{
@@ -87,8 +88,18 @@ internal sealed class SmtpMessageProcessor(ISmtpMessageHeaderService headers, ID
 
 			var file = await files.Select(fileDto);
 
-			if (file is not null)
-				builder.Attachments.Add(attachment.Name, file, ContentType.Parse(file));
+			if (file is null)
+				continue;
+
+			ContentType? contentType = null;
+
+			if (provider.TryGetContentType(attachment.Name, out var ct))
+				_ = ContentType.TryParse(ct, out contentType);
+
+			if (contentType is null)
+				builder.Attachments.Add(attachment.Name, file);
+			else
+				builder.Attachments.Add(attachment.Name, file, contentType);
 		}
 	}
 

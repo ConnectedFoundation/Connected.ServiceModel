@@ -7,15 +7,12 @@ namespace Connected.ServiceModel.Cdn.Smtp.Agent.Listeners;
 
 internal sealed class FileCountSynchronizer(ISmtpMessageService messages, IFileService files)
 {
-	public async Task Synchronize(IFileDto dto)
+	public async Task Synchronize(IPrimaryKeyDto<string> dto)
 	{
-		if (dto.Directory is null)
+		if (!dto.Id.StartsWith(CdnMetaData.SmtpMessageAttachmentsFolder))
 			return;
 
-		if (!dto.Directory.StartsWith(CdnMetaData.SmtpMessageAttachmentsFolder))
-			return;
-
-		var id = Convert.ToInt64(dto.Directory.Split('/').Last());
+		var id = Convert.ToInt64(dto.Id.Split('/')[^2]);
 		var message = await messages.Select(new PrimaryKeyDto<long> { Id = id });
 
 		if (message is null)
@@ -23,7 +20,7 @@ internal sealed class FileCountSynchronizer(ISmtpMessageService messages, IFileS
 
 		var directoryDto = new Dto<IDirectoryDto>().Value;
 
-		directoryDto.Path = dto.Directory;
+		directoryDto.Path = Path.GetDirectoryName(dto.Id)!;
 
 		var fileSet = await files.Query(directoryDto);
 		var patchDto = new PatchDto<long>

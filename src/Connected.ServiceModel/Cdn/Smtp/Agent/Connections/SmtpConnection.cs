@@ -167,7 +167,11 @@ internal sealed class SmtpConnection(string domain) : ISmtpConnection
 			if (_client.IsConnected)
 				_client.Disconnect(true);
 		}
-		catch (Exception)
+		catch
+		{
+
+		}
+		finally
 		{
 			State = SmtpConnectionState.Idle;
 		}
@@ -175,13 +179,8 @@ internal sealed class SmtpConnection(string domain) : ISmtpConnection
 
 	public void Dispose()
 	{
-		if (_client is null)
-			return;
+		Disconnect();
 
-		if (_client.IsConnected)
-			_client.Disconnect(true);
-
-		_client.Dispose();
 		_client = null;
 	}
 }

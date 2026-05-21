@@ -111,17 +111,23 @@ internal sealed class SmtpMessageQueueAction(
 
 			await Fail(recipient, ex.Message, policy.Delay);
 
+			connection.Disconnect();
+
 			throw;
 		}
 		catch (OperationCanceledException)
 		{
 			await Fail(recipient, SR.ErrSendMailCancelled, 60);
 
+			connection.Disconnect();
+
 			throw;
 		}
 		catch (Exception ex)
 		{
 			await Fail(recipient, ex.Message, 60);
+
+			connection.Disconnect();
 
 			throw;
 		}

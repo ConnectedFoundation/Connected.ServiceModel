@@ -4,7 +4,7 @@ using Connected.Services;
 
 namespace Connected.ServiceModel.Storage.FileSystem.Ops;
 
-internal sealed class InsertFile(FileSystemConfiguration configuration, IFileService files, IEventService events)
+internal sealed class InsertFile(FileSystemConfiguration configuration, IDirectoryService directories, IFileService files, IEventService events)
 	: ServiceAction<IInsertFileDto>
 {
 	protected override async Task OnInvoke()
@@ -13,6 +13,10 @@ internal sealed class InsertFile(FileSystemConfiguration configuration, IFileSer
 
 		if (System.IO.File.Exists(path))
 			throw new ArgumentException(SR.ErrFileExists);
+
+		var parsedDirectory = Path.GetDirectoryName(path) ?? throw new NullReferenceException("Cannot resolve directory name");
+
+		await directories.Ensure(parsedDirectory);
 
 		using var file = System.IO.File.Create(path);
 

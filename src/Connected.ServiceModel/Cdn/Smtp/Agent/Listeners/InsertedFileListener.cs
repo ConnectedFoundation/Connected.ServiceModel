@@ -1,14 +1,15 @@
 ﻿using Connected.Annotations;
 using Connected.Notifications;
 using Connected.ServiceModel.Storage;
-using Connected.ServiceModel.Storage.Dtos;
 using Connected.Services;
 
 namespace Connected.ServiceModel.Cdn.Smtp.Agent.Listeners;
 
 [Middleware<IFileService>(ServiceEvents.Inserted)]
+[Middleware<IFileService>(ServiceEvents.Updated)]
+[Middleware<IFileService>(ServiceEvents.Deleted)]
 internal sealed class InsertedFileListener(FileCountSynchronizer synchronizer)
-	: EventListener<IInsertFileDto>
+	: EventListener<IPrimaryKeyDto<string>>
 {
 	protected override async Task OnInvoke()
 	{

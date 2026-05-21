@@ -29,14 +29,16 @@ internal sealed class FileSystemConfiguration
 
 		if (path is not null)
 		{
-			if (path.StartsWith('\\') || path.StartsWith('/'))
+			path = path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
+
+			if (path.Length > 0 && (path[0] == Path.DirectorySeparatorChar || path[0] == Path.AltDirectorySeparatorChar))
 				path = path[1..];
 
 			result = Path.Combine(result, path);
 		}
 
 		if (fileName is not null)
-			result = Path.Combine(result, fileName);
+			result = Path.Combine(result, Path.GetFileName(fileName));
 
 		return result;
 	}
