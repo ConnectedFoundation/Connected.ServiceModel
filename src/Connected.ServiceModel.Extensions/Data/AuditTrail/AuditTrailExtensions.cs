@@ -4,6 +4,7 @@ using Connected.Entities;
 using Connected.ServiceModel.Data.AuditTrail.Dtos;
 using Connected.Services;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Reflection;
 
 namespace Connected.ServiceModel.Data.AuditTrail;
@@ -28,7 +29,7 @@ public static class AuditTrailExtensions
 			if (persistence is not null && (persistence.IsVirtual || persistence.IsReadOnly))
 				continue;
 
-			items.Add(property.Name, property.GetValue(entity));
+			items.Add(property.Name, SerializeValue(property.GetValue(entity)));
 		}
 
 		await service.Write(verb, keyAttribute.Key, entity.Id, items);
@@ -39,7 +40,7 @@ public static class AuditTrailExtensions
 		var properties = new Dictionary<string, object?>();
 
 		if (property is not null)
-			properties.Add(property, value);
+			properties.Add(property, SerializeValue(value));
 
 		await service.Write(verb, entity, entityId, properties);
 	}
@@ -70,7 +71,7 @@ public static class AuditTrailExtensions
 			dto.Entity = entity;
 			dto.EntityId = entityId.ToString() ?? throw new NullReferenceException(nameof(entityId));
 			dto.Property = property.Key;
-			dto.Value = property.Value?.ToString();
+			dto.Value = SerializeValue(property.Value)?.ToString();
 			dto.Verb = AuditTrailVerb.Add;
 
 			await service.Insert(dto);
@@ -94,7 +95,7 @@ public static class AuditTrailExtensions
 			dto.Entity = entity;
 			dto.EntityId = entityId.ToString() ?? throw new NullReferenceException(nameof(entityId));
 			dto.Property = property.Key;
-			dto.Value = property.Value?.ToString();
+			dto.Value = SerializeValue(property.Value)?.ToString();
 			dto.Verb = AuditTrailVerb.Update;
 
 			await service.Insert(dto);
@@ -124,9 +125,26 @@ public static class AuditTrailExtensions
 		foreach (var item in existing)
 		{
 			if (string.Equals(item.Property, property.Key, StringComparison.OrdinalIgnoreCase))
-				return !string.Equals(item.Value, property.Value?.ToString());
+				return !string.Equals(item.Value, SerializeValue(property.Value)?.ToString());
 		}
 
 		return true;
+	}
+
+	private static object? SerializeValue(object? value)
+	{
+		if (value is null)
+			return value;
+
+		if (value is DateTimeOffset dto)
+			return dto.UtcDateTime.ToString(CultureInfo.InvariantCulture);
+		else if (value is DateTime dt)
+			return dt.ToUniversalTime().ToString(CultureInfo.InvariantCulture);
+		else if (value is DateOnly don)
+			return don.ToString(CultureInfo.InvariantCulture);
+		else if (value is TimeOnly ton)
+			return ton.ToString(CultureInfo.InvariantCulture);
+
+		return value;
 	}
 }
