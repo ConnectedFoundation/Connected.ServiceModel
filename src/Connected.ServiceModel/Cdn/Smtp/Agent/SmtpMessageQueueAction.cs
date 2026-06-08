@@ -3,6 +3,7 @@ using Connected.Collections.Queues;
 using Connected.Entities;
 using Connected.ServiceModel.Cdn.Smtp.Agent.Connections;
 using Connected.ServiceModel.Cdn.Smtp.Agent.Connections.Dtos;
+using Connected.ServiceModel.Cdn.Smtp.Dtos;
 using Connected.ServiceModel.Cdn.Smtp.Recipients;
 using Connected.ServiceModel.Cdn.Smtp.Recipients.Dtos;
 using Connected.Services;
@@ -16,6 +17,7 @@ internal sealed class SmtpMessageQueueAction(
 	ISmtpMessageRecipientService recipients,
 	ISmtpConnectionService connections,
 	SmtpMessageProcessor processor,
+	IMiddlewareService middlewareService,
 	ILogger<SmtpMessageQueueAction> logger)
 	: QueueAction<IPrimaryKeyDto<long>>
 {
@@ -54,6 +56,57 @@ internal sealed class SmtpMessageQueueAction(
 	}
 
 	private async Task Invoke(ISmtpMessage message, ISmtpMessageRecipient recipient)
+	{
+		if (!await SendByMiddleware(message, recipient))
+			await SendNative(message, recipient);
+	}
+
+	private async Task<bool> SendByMiddleware(ISmtpMessage message, ISmtpMessageRecipient recipient)
+	{
+		var middlewares = await middlewareService.Query<ISmtpMessageDispatcher>();
+		var dispatcherDto = DtoFactory.Create<ISmtpMessageDispatcherDto>(f =>
+		{
+			f.Message = message;
+			f.Recipient = recipient;
+		});
+
+		foreach (var middleware in middlewares)
+		{
+			try
+			{
+				if (await middleware.Invoke(dispatcherDto))
+				{
+					await Success(recipient);
+
+					return true;
+				}
+			}
+			catch (SmtpException ex)
+			{
+				var policy = new ResendPolicy(ex);
+
+				await Fail(recipient, ex.Message, policy.Delay);
+
+				throw;
+			}
+			catch (OperationCanceledException)
+			{
+				await Fail(recipient, SR.ErrSendMailCancelled, 60);
+
+				throw;
+			}
+			catch (Exception ex)
+			{
+				await Fail(recipient, ex.Message, 60);
+
+				throw;
+			}
+		}
+
+		return false;
+	}
+
+	private async Task SendNative(ISmtpMessage message, ISmtpMessageRecipient recipient)
 	{
 		var domain = SmtpUtils.ResolveEmailDomain(recipient.Email);
 
