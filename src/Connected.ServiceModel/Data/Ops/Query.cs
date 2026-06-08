@@ -1,5 +1,4 @@
-﻿using Connected.Data.AuditTrail;
-using Connected.Entities;
+﻿using Connected.Entities;
 using Connected.ServiceModel.Data.AuditTrail;
 using Connected.Services;
 using Connected.Storage;
@@ -12,7 +11,11 @@ internal sealed class Query(IStorageProvider storage)
 {
 	protected override async Task<IImmutableList<IAuditTrail>> OnInvoke()
 	{
-		return await storage.Open<AuditTrailEntry>().AsEntities<IAuditTrail>(f => string.Equals(f.Entity, Dto.Entity, StringComparison.OrdinalIgnoreCase)
+		var query = storage.Open<AuditTrailEntry>().AsQueryable();
+
+		query = query.Where(f => string.Equals(f.Entity, Dto.Entity, StringComparison.OrdinalIgnoreCase)
 			&& string.Equals(f.EntityId, Dto.EntityId, StringComparison.OrdinalIgnoreCase));
+
+		return await query.AsEntities<IAuditTrail>();
 	}
 }
