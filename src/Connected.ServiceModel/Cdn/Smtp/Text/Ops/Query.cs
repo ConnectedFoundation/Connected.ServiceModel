@@ -9,6 +9,6 @@ internal sealed class Query(IStorageProvider storage)
 {
 	protected override async Task<IImmutableList<ISmtpMessageText>> OnInvoke()
 	{
-		return await storage.Open<SmtpMessageText>().AsEntities<ISmtpMessageText>(f => Dto.Items.Any(g => g == f.Id));
+		return await storage.Open<SmtpMessageText>().AsEntities<ISmtpMessageText>(f => Dto.Items.Contains(f.Id));
 	}
 }

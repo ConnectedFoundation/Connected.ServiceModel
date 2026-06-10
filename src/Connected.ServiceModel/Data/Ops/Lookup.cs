@@ -11,6 +11,6 @@ internal sealed class Lookup(IStorageProvider storage)
 {
 	protected override async Task<IImmutableList<IAuditTrail>> OnInvoke()
 	{
-		return await storage.Open<AuditTrailEntry>().AsEntities<IAuditTrail>(f => Dto.Items.Any(g => g == f.Id));
+		return await storage.Open<AuditTrailEntry>().AsEntities<IAuditTrail>(f => Dto.Items.Contains(f.Id));
 	}
 }
