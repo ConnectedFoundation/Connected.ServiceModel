@@ -7,6 +7,6 @@ namespace Connected.ServiceModel.Data.AuditTrail;
 [Service, ServiceUrl(DataUrls.AuditTrail)]
 public interface IAuditTrailExtensionService
 {
-	[ServiceOperation(ServiceOperationVerbs.Get), ServiceUrl("lookup-descriptors")]
+	[ServiceOperation(ServiceOperationVerbs.Get | ServiceOperationVerbs.Post), ServiceUrl("lookup-descriptors")]
 	Task<IImmutableList<IAuditTrailDescriptor>> LookupDescriptors(IPrimaryKeyListDto<long> dto);
 }
