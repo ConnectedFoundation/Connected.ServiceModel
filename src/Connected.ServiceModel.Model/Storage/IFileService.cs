@@ -1,0 +1,32 @@
+﻿using Connected.Annotations;
+using Connected.ServiceModel.Storage.Dtos;
+using System.Collections.Immutable;
+
+namespace Connected.ServiceModel.Storage;
+
+[Service, ServiceUrl(StorageUrls.FileService)]
+public interface IFileService
+{
+	[ServiceOperation(ServiceOperationVerbs.Put)]
+	Task Insert(IInsertFileDto dto);
+
+	[ServiceOperation(ServiceOperationVerbs.Post)]
+	Task Update(IUpdateFileDto dto);
+
+	[ServiceOperation(ServiceOperationVerbs.Delete)]
+	Task Delete(IDeleteFileDto dto);
+
+	[ServiceOperation(ServiceOperationVerbs.Post)]
+	Task Move(IMoveFileDto dto);
+
+	[ServiceOperation(ServiceOperationVerbs.Get)]
+	Task<byte[]?> Select(IFileDto dto);
+
+	Task<FileInfo?> SelectMetaData(IFileDto dto);
+
+	[ServiceOperation(ServiceOperationVerbs.Get)]
+	Task<bool> Exists(IFileDto dto);
+
+	[ServiceOperation(ServiceOperationVerbs.Get)]
+	Task<IImmutableList<IFile>> Query(IDirectoryDto dto);
+}

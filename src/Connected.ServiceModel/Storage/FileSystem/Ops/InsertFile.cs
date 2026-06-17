@@ -1,0 +1,28 @@
+﻿using Connected.Notifications;
+using Connected.ServiceModel.Storage.Dtos;
+using Connected.Services;
+
+namespace Connected.ServiceModel.Storage.FileSystem.Ops;
+
+internal sealed class InsertFile(FileSystemConfiguration configuration, IDirectoryService directories, IFileService files, IEventService events)
+	: ServiceAction<IInsertFileDto>
+{
+	protected override async Task OnInvoke()
+	{
+		var path = configuration.CombinePath(Dto.Directory, Dto.FileName);
+
+		if (System.IO.File.Exists(path))
+			throw new ArgumentException(SR.ErrFileExists);
+
+		var parsedDirectory = Path.GetDirectoryName(path) ?? throw new NullReferenceException("Cannot resolve directory name");
+
+		await directories.Ensure(parsedDirectory);
+
+		using var file = System.IO.File.Create(path);
+
+		if (Dto.Content is not null)
+			await file.WriteAsync(Dto.Content);
+
+		await events.Inserted(this, files, $"{Dto.Directory}/{Dto.FileName}");
+	}
+}
