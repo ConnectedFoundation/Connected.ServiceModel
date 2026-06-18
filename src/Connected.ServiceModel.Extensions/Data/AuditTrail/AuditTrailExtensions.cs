@@ -137,9 +137,9 @@ public static class AuditTrailExtensions
 			return value;
 
 		if (value is DateTimeOffset dto)
-			return dto.UtcDateTime.ToString(CultureInfo.InvariantCulture);
+			return dto.UtcDateTime.ToString("o", CultureInfo.InvariantCulture);
 		else if (value is DateTime dt)
-			return dt.ToUniversalTime().ToString(CultureInfo.InvariantCulture);
+			return dt.ToUniversalTime().ToString("o", CultureInfo.InvariantCulture);
 		else if (value is DateOnly don)
 			return don.ToString(CultureInfo.InvariantCulture);
 		else if (value is TimeOnly ton)
