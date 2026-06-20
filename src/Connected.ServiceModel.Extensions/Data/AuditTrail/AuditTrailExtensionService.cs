@@ -11,4 +11,9 @@ internal sealed class AuditTrailExtensionService(IServiceProvider services)
 	{
 		return await Invoke(GetOperation<Lookup>(), dto);
 	}
+
+    public async Task<IImmutableList<IAuditTrail>> Query(IEntityDto dto)
+    {
+        return await Invoke(GetOperation<Query>(), dto);
+    }
 }
