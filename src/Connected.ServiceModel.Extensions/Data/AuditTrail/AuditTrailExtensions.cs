@@ -2,6 +2,7 @@
 using Connected.Authentication;
 using Connected.Entities;
 using Connected.ServiceModel.Data.AuditTrail.Dtos;
+using Connected.ServiceModel.Storage.Data.AuditTrail.Dtos;
 using Connected.Services;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -115,7 +116,11 @@ public static class AuditTrailExtensions
 
 	private static async Task<IImmutableList<IAuditTrail>> Query(this IAuditTrailService service, string entity, object entityId)
 	{
-		var dto = Dto.Factory.CreateEntity(entity, entityId.ToString() ?? throw new NullReferenceException(nameof(entityId)));
+		var dto = DtoFactory.Create<IQueryAuditTrailDto>(f =>
+		{
+			f.Entities = [entity];
+			f.EntityIds = [entityId.ToString() ?? throw new NullReferenceException(nameof(entityId))];
+		});
 
 		return await service.Query(dto);
 	}

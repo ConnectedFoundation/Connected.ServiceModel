@@ -2,7 +2,7 @@
 
 namespace Connected.ServiceModel.Data.AuditTrail;
 
-public interface IAuditTrailDescriptor
+public interface IAuditTrailPropertyDescriptor
 	: IEntity<long>
 {
 	string Property { get; init; }

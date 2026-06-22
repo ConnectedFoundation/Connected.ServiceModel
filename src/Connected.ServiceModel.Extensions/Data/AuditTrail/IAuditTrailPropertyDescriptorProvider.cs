@@ -3,8 +3,8 @@ using System.Collections.Immutable;
 
 namespace Connected.ServiceModel.Data.AuditTrail;
 
-public interface IAuditTrailDescriptorProvider
+public interface IAuditTrailPropertyDescriptorProvider
 	: IMiddleware
 {
-	Task<IImmutableList<IAuditTrailDescriptor>> Invoke(ILookupDescriptorDto dto);
+	Task<IImmutableList<IAuditTrailPropertyDescriptor>> Invoke(ILookupDescriptorDto dto);
 }

@@ -1,6 +1,7 @@
 ﻿using Connected.ServiceModel.Data.AuditTrail;
 using Connected.ServiceModel.Data.AuditTrail.Dtos;
 using Connected.ServiceModel.Data.Ops;
+using Connected.ServiceModel.Storage.Data.AuditTrail.Dtos;
 using Connected.Services;
 using System.Collections.Immutable;
 
@@ -19,13 +20,8 @@ internal sealed class AuditTrailService(IServiceProvider services)
 		return await Invoke(GetOperation<Insert>(), dto);
 	}
 
-	public async Task<IImmutableList<IAuditTrail>> Query(IEntityDto dto)
+	public async Task<IImmutableList<IAuditTrail>> Query(IQueryAuditTrailDto dto)
 	{
 		return await Invoke(GetOperation<Query>(), dto);
-	}
-
-	public async Task<IImmutableList<IAuditTrail>> Query(IPrimaryKeyListDto<long> dto)
-	{
-		return await Invoke(GetOperation<Lookup>(), dto);
 	}
 }

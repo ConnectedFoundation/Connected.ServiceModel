@@ -1,5 +1,6 @@
 ﻿using Connected.Annotations;
 using Connected.ServiceModel.Data.AuditTrail.Dtos;
+using Connected.ServiceModel.Storage.Data.AuditTrail.Dtos;
 using Connected.Services;
 using System.Collections.Immutable;
 
@@ -12,10 +13,7 @@ public interface IAuditTrailService
 	Task<long> Insert(IInsertAuditTrailDto dto);
 
 	[ServiceOperation(ServiceOperationVerbs.Get)]
-	Task<IImmutableList<IAuditTrail>> Query(IEntityDto dto);
-
-	[ServiceOperation(ServiceOperationVerbs.Get), ServiceUrl(ServiceOperations.Lookup)]
-	Task<IImmutableList<IAuditTrail>> Query(IPrimaryKeyListDto<long> dto);
+	Task<IImmutableList<IAuditTrail>> Query(IQueryAuditTrailDto dto);
 
 	[ServiceOperation(ServiceOperationVerbs.Delete)]
 	Task Delete(IEntityDto dto);
