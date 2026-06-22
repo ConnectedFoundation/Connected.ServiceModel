@@ -12,7 +12,7 @@ public interface IAuditTrailService
 	[ServiceOperation(ServiceOperationVerbs.Post)]
 	Task<long> Insert(IInsertAuditTrailDto dto);
 
-	[ServiceOperation(ServiceOperationVerbs.Get)]
+	[ServiceOperation(ServiceOperationVerbs.Get | ServiceOperationVerbs.Post)]
 	Task<IImmutableList<IAuditTrail>> Query(IQueryAuditTrailDto dto);
 
 	[ServiceOperation(ServiceOperationVerbs.Delete)]
