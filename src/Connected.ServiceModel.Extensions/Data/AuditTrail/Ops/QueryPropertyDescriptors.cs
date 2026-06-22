@@ -30,8 +30,6 @@ internal sealed class QueryPropertyDescriptors(
 			}
 		}
 
-		return result
-			.OrderBy(f => f.Id)
-			.ToImmutableList();
+		return result.ToImmutableList();
 	}
 }
