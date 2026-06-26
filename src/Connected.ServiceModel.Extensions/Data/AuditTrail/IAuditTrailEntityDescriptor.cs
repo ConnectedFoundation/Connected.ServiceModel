@@ -8,4 +8,5 @@ public interface IAuditTrailEntityDescriptor
 	string Entity { get; init; }
 	string EntityId { get; init; }
 	string Title { get; init; }
+    string? EntityName { get; init; }
 }

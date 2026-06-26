@@ -10,4 +10,5 @@ public record AuditTrailEntityDescriptor
 	public required string Entity { get; init; }
 	public required string EntityId { get; init; }
 	public required string Title { get; init; }
+    public string? EntityName { get; init; }
 }
