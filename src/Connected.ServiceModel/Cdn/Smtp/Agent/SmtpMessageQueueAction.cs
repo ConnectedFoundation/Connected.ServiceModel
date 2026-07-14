@@ -39,7 +39,7 @@ internal sealed class SmtpMessageQueueAction(
 			return;
 		}
 
-		await Lease();
+		await Ping();
 
 		_task = new TimeoutTask(Lease, TimeSpan.FromSeconds(10), Lifespan, TimeSpan.FromMinutes(1), Cancel);
 
