@@ -19,13 +19,22 @@ internal sealed class SmtpMessageQueueAction(
 	SmtpMessageProcessor processor,
 	IMiddlewareService middlewareService,
 	ILogger<SmtpMessageQueueAction> logger)
-	: QueueAction<IPrimaryKeyDto<long>>
+	: QueueAction<IPrimaryKeyDto<long>>, IDisposable
 {
 	private TimeoutTask? _task;
+	private CancellationTokenSource? _cts;
+
 	protected override async Task OnInvoke()
 	{
+		_cts = new();
+
+		Cancel.Register(() =>
+		{
+			_cts.Cancel();
+		});
+
 		var recipient = (await recipients.Select(Dto)).Required();
-		var smtpMessage = await messages.Select(Dto.CreatePrimaryKey(recipient.Head));
+		var smtpMessage = await messages.Select(DtoFactory.Create<IPrimaryKeyDto<long>>(f => f.Id = recipient.Head));
 
 		if (smtpMessage is null)
 		{
@@ -63,7 +72,7 @@ internal sealed class SmtpMessageQueueAction(
 
 	private async Task<bool> SendByMiddleware(ISmtpMessage message, ISmtpMessageRecipient recipient)
 	{
-		var middlewares = await middlewareService.Query<ISmtpMessageDispatcher>();
+		var middlewares = await middlewareService.Query<ISmtpMessageDispatcher>(_cts?.Token);
 		var dispatcherDto = DtoFactory.Create<ISmtpMessageDispatcherDto>(f =>
 		{
 			f.Message = message;
@@ -116,10 +125,7 @@ internal sealed class SmtpMessageQueueAction(
 			return;
 		}
 
-		var dto = Dto.Create<ISelectSmtpConnectionDto>();
-
-		dto.Domain = domain;
-
+		var dto = DtoFactory.Create<ISelectSmtpConnectionDto>(f => f.Domain = domain);
 		var connection = await connections.Select(dto);
 
 		if (connection is null)
@@ -143,7 +149,7 @@ internal sealed class SmtpMessageQueueAction(
 	{
 		logger.LogWarning("{Message} ({Id})", SR.WrnLifespan, Dto.Id);
 
-		await Lease();
+		_cts?.Cancel();
 	}
 
 	private async Task SendMail(ISmtpConnection connection, ISmtpMessage message, ISmtpMessageRecipient recipient)
@@ -152,9 +158,10 @@ internal sealed class SmtpMessageQueueAction(
 		{
 			var address = MailboxAddress.Parse(recipient.Email);
 			var email = await processor.Invoke(message, recipient);
+			var token = _cts == null ? Cancel : _cts.Token;
 
-			connection.Connect(Cancel);
-			connection.Send(Cancel, email, recipient.Email);
+			connection.Connect(token);
+			connection.Send(token, email, recipient.Email);
 
 			await Success(recipient);
 		}
@@ -188,10 +195,11 @@ internal sealed class SmtpMessageQueueAction(
 
 	private async Task Success(ISmtpMessageRecipient recipient)
 	{
-		var dto = Dto.Create<IUpdateSmtpMessageRecipientDto>();
-
-		dto.Id = recipient.Id;
-		dto.Status = SmtpMessageRecipientStatus.Sent;
+		var dto = DtoFactory.Create<IUpdateSmtpMessageRecipientDto>(f =>
+		{
+			f.Id = recipient.Id;
+			f.Status = SmtpMessageRecipientStatus.Sent;
+		});
 
 		await recipients.Update(dto);
 	}
@@ -200,12 +208,22 @@ internal sealed class SmtpMessageQueueAction(
 	{
 		logger.LogError("{Message}", message);
 
-		var dto = Dto.Create<IUpdateSmtpMessageRecipientDto>();
-
-		dto.Id = recipient.Id;
-		dto.Status = SmtpMessageRecipientStatus.Error;
+		var dto = DtoFactory.Create<IUpdateSmtpMessageRecipientDto>(f =>
+		{
+			f.Id = recipient.Id;
+			f.Status = SmtpMessageRecipientStatus.Error;
+		});
 
 		await recipients.Update(dto);
 		await Lease();
+	}
+
+	protected override void OnDisposing()
+	{
+		_cts?.Cancel();
+		_cts?.Dispose();
+
+		_task?.Stop();
+		_task?.Dispose();
 	}
 }
