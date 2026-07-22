@@ -9,5 +9,8 @@ internal sealed class SmtpMessageQueueContext(
 	ISmtpMessageQueueCache cache)
 		: QueueContext<SmtpMessageQueueMessage, SmtpMessageQueueAction, IPrimaryKeyDto<long>>(storage, cache)
 {
-
+    protected override async Task OnInitialize()
+    {
+        PopInterval = TimeSpan.FromMinutes(1);
+    }
 }
