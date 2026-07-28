@@ -19,52 +19,48 @@ internal sealed class SmtpMessageQueueAction(
 	SmtpMessageProcessor processor,
 	IMiddlewareService middlewareService,
 	ILogger<SmtpMessageQueueAction> logger)
-	: QueueAction<IPrimaryKeyDto<long>>
+	: QueueAction<IPrimaryKeyDto<long>>, IDisposable
 {
 	private TimeoutTask? _task;
 	private CancellationTokenSource? _cts;
 
 	protected override async Task OnInvoke()
 	{
-		var cts = new CancellationTokenSource();
-		var registration = Cancel.Register(cts.Cancel);
+		_cts = new();
 
-		_cts = cts;
+		Cancel.Register(() =>
+		{
+			_cts.Cancel();
+		});
+
+		var recipient = (await recipients.Select(Dto)).Required();
+		var smtpMessage = await messages.Select(DtoFactory.Create<IPrimaryKeyDto<long>>(f => f.Id = recipient.Head));
+
+		if (smtpMessage is null)
+		{
+			logger.LogWarning("{Message} ({Id})", SR.WrnMessageNotFound, Dto.Id);
+			return;
+		}
+
+		if (Message.Expire <= DateTimeOffset.UtcNow)
+		{
+			logger.LogWarning("{Message} ({Id})", SR.WrnExpired, Dto.Id);
+			return;
+		}
+
+		await Ping();
+
+		_task = new TimeoutTask(Lease, TimeSpan.FromSeconds(10), Lifespan, TimeSpan.FromMinutes(1), Cancel);
+
+		_task.Start();
 
 		try
 		{
-			var recipient = (await recipients.Select(Dto)).Required();
-			var smtpMessage = await messages.Select(DtoFactory.Create<IPrimaryKeyDto<long>>(f => f.Id = recipient.Head));
-
-			if (smtpMessage is null)
-			{
-				logger.LogWarning("{Message} ({Id})", SR.WrnMessageNotFound, Dto.Id);
-				return;
-			}
-
-			if (Message.Expire <= DateTimeOffset.UtcNow)
-			{
-				logger.LogWarning("{Message} ({Id})", SR.WrnExpired, Dto.Id);
-				return;
-			}
-
-			await Ping();
-
-			_task = new TimeoutTask(ExtendLease, TimeSpan.FromSeconds(10), Lifespan, TimeSpan.FromMinutes(1), Cancel);
-
-			_task.Start();
-
 			await Invoke(smtpMessage, recipient);
 		}
 		finally
 		{
-			_task?.Stop();
-			_task = null;
-
-			_cts = null;
-
-			registration.Dispose();
-			cts.Dispose();
+			_task.Stop();
 		}
 	}
 
@@ -76,7 +72,7 @@ internal sealed class SmtpMessageQueueAction(
 
 	private async Task<bool> SendByMiddleware(ISmtpMessage message, ISmtpMessageRecipient recipient)
 	{
-		var middlewares = await middlewareService.Query<ISmtpMessageDispatcher>();
+		var middlewares = await middlewareService.Query<ISmtpMessageDispatcher>(_cts?.Token);
 		var dispatcherDto = DtoFactory.Create<ISmtpMessageDispatcherDto>(f =>
 		{
 			f.Message = message;
@@ -142,20 +138,18 @@ internal sealed class SmtpMessageQueueAction(
 		await SendMail(connection, message, recipient);
 	}
 
-	private async Task ExtendLease()
+	private async Task Lease()
 	{
 		logger.LogWarning("{Message} ({Id})", SR.WrnPingNeeded, Dto.Id);
 
 		await Ping();
 	}
 
-	private Task Lifespan()
+	private async Task Lifespan()
 	{
 		logger.LogWarning("{Message} ({Id})", SR.WrnLifespan, Dto.Id);
 
 		_cts?.Cancel();
-
-		return Task.CompletedTask;
 	}
 
 	private async Task SendMail(ISmtpConnection connection, ISmtpMessage message, ISmtpMessageRecipient recipient)
@@ -221,6 +215,15 @@ internal sealed class SmtpMessageQueueAction(
 		});
 
 		await recipients.Update(dto);
-		await ExtendLease();
+		await Lease();
+	}
+
+	protected override void OnDisposing()
+	{
+		_cts?.Cancel();
+		_cts?.Dispose();
+
+		_task?.Stop();
+		_task?.Dispose();
 	}
 }
