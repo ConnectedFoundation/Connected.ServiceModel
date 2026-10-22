@@ -23,12 +23,16 @@ internal sealed class SmtpMessageQueueAction(
 {
 	private TimeoutTask? _task;
 	private CancellationTokenSource? _cts;
+	private CancellationTokenRegistration _registration;
 
 	protected override async Task OnInvoke()
 	{
 		_cts = new();
-
-		Cancel.Register(() =>
+		/*
+		 * The queue token lives as long as the host, so the registration must be disposed,
+		 * otherwise the token keeps this action and its whole scope alive.
+		 */
+		_registration = Cancel.Register(() =>
 		{
 			_cts.Cancel();
 		});
@@ -220,6 +224,8 @@ internal sealed class SmtpMessageQueueAction(
 
 	protected override void OnDisposing()
 	{
+		_registration.Dispose();
+
 		_cts?.Cancel();
 		_cts?.Dispose();
 
