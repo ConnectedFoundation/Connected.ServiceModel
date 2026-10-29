@@ -1,0 +1,12 @@
+<!-- Where the sibling repositories are. A workspace or task Directory.Build.props above this repository, or
+     properties given on the command line, decide; otherwise the repositories sit side by side. -->
+<Project>
+  <!-- The workspace's or task's props first, so the sibling paths they give win over the defaults below. -->
+  <PropertyGroup>
+    <ParentBuildProps>$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))</ParentBuildProps>
+  </PropertyGroup>
+  <Import Project="$(ParentBuildProps)" Condition="'$(ParentBuildProps)' != ''" />
+  <PropertyGroup>
+    <ConnectedCore Condition="'$(ConnectedCore)' == ''">$(MSBuildThisFileDirectory)../Connected.Core/src</ConnectedCore>
+  </PropertyGroup>
+</Project>

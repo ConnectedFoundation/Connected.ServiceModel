@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Sdk\Connected.Sdk.csproj" />
+    <ProjectReference Include="$(ConnectedCore)\Connected.Sdk\Connected.Sdk.csproj" />
   </ItemGroup>
 
 </Project>
