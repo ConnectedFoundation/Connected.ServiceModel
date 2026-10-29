@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Connected.Core\src\Connected.Sdk\Connected.Sdk.csproj" />
-    <ProjectReference Include="..\..\..\Connected.Core\src\Connected\Connected.csproj" />
+    <ProjectReference Include="$(ConnectedCore)\Connected.Sdk\Connected.Sdk.csproj" />
+    <ProjectReference Include="$(ConnectedCore)\Connected\Connected.csproj" />
     <ProjectReference Include="..\Connected.ServiceModel\Connected.ServiceModel.csproj" />
   </ItemGroup>
 
